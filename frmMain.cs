@@ -62,7 +62,8 @@ namespace TerrariaDedicatedServerGUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.GetExternalIP(); //retrieve external ip adress
+            this.GetExternalIP(); //retrieve external ip adress *dirty retrieve should async
+
             this.tmpSetConfig.Init(this.sAppPath);
 
             this.tmpController.ProgressChanged += new Controller.EventHandler(tmpController_ProgressChanged);
@@ -70,16 +71,13 @@ namespace TerrariaDedicatedServerGUI
 
             this.SetControls();
 
+            this.Text = String.Format("{0}{1}", this.Text, File.GetLastWriteTime(this.sAppPath + "TerrariaDedicatedServerGUI.vshost.exe")); //dirty dont use absolute String TerrariaDedicatedServerGUI.exe
+
             UIModClass.DoubleBufferControl.Buffer(this.lbController, true);
 
             if (Directory.Exists(this.tmpSetConfig.WorldPath))
-            {
+            {//retrieve all Maps
                 String[] sBuffer = Directory.GetFiles(this.tmpSetConfig.WorldPath, "*.wld");
-
-                //foreach (string s in sBuffer)
-                //{
-                //    this.lbMaps.Items.Add(s);
-                //}
                 this.lbMaps.Items.AddRange(sBuffer);
             }
 
