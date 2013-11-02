@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Server
+namespace Local.Server
 {
     class SetConfig : IDisposable
     {

@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace UIModClass
+namespace Local.UIClass
 {
     class DoubleBufferControl
     {

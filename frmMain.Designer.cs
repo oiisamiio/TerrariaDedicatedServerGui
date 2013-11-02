@@ -121,21 +121,21 @@
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(117, 28);
+            this.tsmiSave.Size = new System.Drawing.Size(152, 28);
             this.tsmiSave.Text = "&Save";
             this.tsmiSave.Click += new System.EventHandler(this.tsmiSave_Click);
             // 
             // tsmiLoad
             // 
             this.tsmiLoad.Name = "tsmiLoad";
-            this.tsmiLoad.Size = new System.Drawing.Size(117, 28);
+            this.tsmiLoad.Size = new System.Drawing.Size(152, 28);
             this.tsmiLoad.Text = "&Load";
             this.tsmiLoad.Click += new System.EventHandler(this.tsmiLoad_Click);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(117, 28);
+            this.tsmiExit.Size = new System.Drawing.Size(152, 28);
             this.tsmiExit.Text = "&Exit";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -152,24 +152,25 @@
             this.ssBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsslIpAdress,
             this.tsslServerValue});
-            this.ssBottom.Location = new System.Drawing.Point(0, 662);
+            this.ssBottom.Location = new System.Drawing.Point(0, 658);
             this.ssBottom.Name = "ssBottom";
             this.ssBottom.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.ssBottom.Size = new System.Drawing.Size(1045, 28);
+            this.ssBottom.Size = new System.Drawing.Size(1045, 32);
             this.ssBottom.TabIndex = 1;
             this.ssBottom.Text = "statusStrip1";
             // 
             // tsslIpAdress
             // 
+            this.tsslIpAdress.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Right;
             this.tsslIpAdress.Name = "tsslIpAdress";
-            this.tsslIpAdress.Size = new System.Drawing.Size(17, 23);
-            this.tsslIpAdress.Text = "*";
+            this.tsslIpAdress.Size = new System.Drawing.Size(104, 27);
+            this.tsslIpAdress.Text = "unknown IP";
             // 
             // tsslServerValue
             // 
             this.tsslServerValue.Name = "tsslServerValue";
-            this.tsslServerValue.Size = new System.Drawing.Size(17, 23);
-            this.tsslServerValue.Text = "*";
+            this.tsslServerValue.Size = new System.Drawing.Size(109, 27);
+            this.tsslServerValue.Text = "Server offline";
             // 
             // tcMain
             // 
@@ -181,10 +182,10 @@
             this.tcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcMain.ItemSize = new System.Drawing.Size(100, 20);
             this.tcMain.Location = new System.Drawing.Point(0, 31);
-            this.tcMain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tcMain.Margin = new System.Windows.Forms.Padding(4);
             this.tcMain.Name = "tcMain";
             this.tcMain.SelectedIndex = 0;
-            this.tcMain.Size = new System.Drawing.Size(1045, 631);
+            this.tcMain.Size = new System.Drawing.Size(1045, 627);
             this.tcMain.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tcMain.TabIndex = 2;
             // 
@@ -192,10 +193,10 @@
             // 
             this.tpSettings.Controls.Add(this.flpSettings);
             this.tpSettings.Location = new System.Drawing.Point(4, 24);
-            this.tpSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpSettings.Margin = new System.Windows.Forms.Padding(4);
             this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.tpSettings.Size = new System.Drawing.Size(1037, 603);
+            this.tpSettings.Padding = new System.Windows.Forms.Padding(4);
+            this.tpSettings.Size = new System.Drawing.Size(1037, 599);
             this.tpSettings.TabIndex = 0;
             this.tpSettings.Text = "Settings";
             this.tpSettings.UseVisualStyleBackColor = true;
@@ -236,9 +237,9 @@
             this.flpSettings.Controls.Add(this.chbAutoShutDown);
             this.flpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpSettings.Location = new System.Drawing.Point(4, 4);
-            this.flpSettings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flpSettings.Margin = new System.Windows.Forms.Padding(4);
             this.flpSettings.Name = "flpSettings";
-            this.flpSettings.Size = new System.Drawing.Size(1029, 595);
+            this.flpSettings.Size = new System.Drawing.Size(1029, 591);
             this.flpSettings.TabIndex = 0;
             // 
             // lblServerPath
@@ -365,7 +366,7 @@
             "2 - medium",
             "3 - large"});
             this.cbAutoCreate.Location = new System.Drawing.Point(4, 177);
-            this.cbAutoCreate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbAutoCreate.Margin = new System.Windows.Forms.Padding(4);
             this.cbAutoCreate.Name = "cbAutoCreate";
             this.cbAutoCreate.Size = new System.Drawing.Size(199, 28);
             this.cbAutoCreate.TabIndex = 27;
@@ -546,7 +547,7 @@
             this.flpSettings.SetFlowBreak(this.chbUpnp, true);
             this.chbUpnp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbUpnp.Location = new System.Drawing.Point(4, 676);
-            this.chbUpnp.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chbUpnp.Margin = new System.Windows.Forms.Padding(4);
             this.chbUpnp.Name = "chbUpnp";
             this.chbUpnp.Size = new System.Drawing.Size(284, 24);
             this.chbUpnp.TabIndex = 12;
@@ -578,7 +579,7 @@
             "4 - French",
             "5 - Spanish"});
             this.cbLangauge.Location = new System.Drawing.Point(4, 747);
-            this.cbLangauge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbLangauge.Margin = new System.Windows.Forms.Padding(4);
             this.cbLangauge.Name = "cbLangauge";
             this.cbLangauge.Size = new System.Drawing.Size(199, 28);
             this.cbLangauge.TabIndex = 21;
@@ -609,7 +610,7 @@
             "4 - BelowNormal",
             "5 - Idle"});
             this.cbPriority.Location = new System.Drawing.Point(4, 819);
-            this.cbPriority.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbPriority.Margin = new System.Windows.Forms.Padding(4);
             this.cbPriority.Name = "cbPriority";
             this.cbPriority.Size = new System.Drawing.Size(199, 28);
             this.cbPriority.TabIndex = 25;
@@ -649,7 +650,7 @@
             this.flpSettings.SetFlowBreak(this.chbAutoShutDown, true);
             this.chbAutoShutDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chbAutoShutDown.Location = new System.Drawing.Point(4, 922);
-            this.chbAutoShutDown.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chbAutoShutDown.Margin = new System.Windows.Forms.Padding(4);
             this.chbAutoShutDown.Name = "chbAutoShutDown";
             this.chbAutoShutDown.Size = new System.Drawing.Size(139, 24);
             this.chbAutoShutDown.TabIndex = 30;
@@ -661,9 +662,9 @@
             // 
             this.tpMotd.Controls.Add(this.flpMotd);
             this.tpMotd.Location = new System.Drawing.Point(4, 24);
-            this.tpMotd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpMotd.Margin = new System.Windows.Forms.Padding(4);
             this.tpMotd.Name = "tpMotd";
-            this.tpMotd.Size = new System.Drawing.Size(1037, 605);
+            this.tpMotd.Size = new System.Drawing.Size(1037, 603);
             this.tpMotd.TabIndex = 1;
             this.tpMotd.Text = "Motd";
             this.tpMotd.UseVisualStyleBackColor = true;
@@ -674,9 +675,9 @@
             this.flpMotd.Controls.Add(this.tbMotd);
             this.flpMotd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpMotd.Location = new System.Drawing.Point(0, 0);
-            this.flpMotd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flpMotd.Margin = new System.Windows.Forms.Padding(4);
             this.flpMotd.Name = "flpMotd";
-            this.flpMotd.Size = new System.Drawing.Size(1037, 605);
+            this.flpMotd.Size = new System.Drawing.Size(1037, 603);
             this.flpMotd.TabIndex = 0;
             // 
             // lblMotd
@@ -707,9 +708,9 @@
             // 
             this.tpWorlds.Controls.Add(this.lbMaps);
             this.tpWorlds.Location = new System.Drawing.Point(4, 24);
-            this.tpWorlds.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpWorlds.Margin = new System.Windows.Forms.Padding(4);
             this.tpWorlds.Name = "tpWorlds";
-            this.tpWorlds.Size = new System.Drawing.Size(1037, 605);
+            this.tpWorlds.Size = new System.Drawing.Size(1037, 603);
             this.tpWorlds.TabIndex = 2;
             this.tpWorlds.Text = "Worlds";
             this.tpWorlds.UseVisualStyleBackColor = true;
@@ -720,9 +721,9 @@
             this.lbMaps.FormattingEnabled = true;
             this.lbMaps.ItemHeight = 16;
             this.lbMaps.Location = new System.Drawing.Point(0, 0);
-            this.lbMaps.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lbMaps.Margin = new System.Windows.Forms.Padding(4);
             this.lbMaps.Name = "lbMaps";
-            this.lbMaps.Size = new System.Drawing.Size(1037, 605);
+            this.lbMaps.Size = new System.Drawing.Size(1037, 603);
             this.lbMaps.TabIndex = 0;
             // 
             // tbConsole
@@ -733,9 +734,9 @@
             this.tbConsole.Controls.Add(this.tbCommand);
             this.tbConsole.Controls.Add(this.lbController);
             this.tbConsole.Location = new System.Drawing.Point(4, 24);
-            this.tbConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbConsole.Margin = new System.Windows.Forms.Padding(4);
             this.tbConsole.Name = "tbConsole";
-            this.tbConsole.Size = new System.Drawing.Size(1037, 603);
+            this.tbConsole.Size = new System.Drawing.Size(1037, 599);
             this.tbConsole.TabIndex = 3;
             this.tbConsole.Text = "Console";
             this.tbConsole.UseVisualStyleBackColor = true;
@@ -762,7 +763,7 @@
             "midnight",
             "settle"});
             this.cbConsole.Location = new System.Drawing.Point(697, 571);
-            this.cbConsole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbConsole.Margin = new System.Windows.Forms.Padding(4);
             this.cbConsole.Name = "cbConsole";
             this.cbConsole.Size = new System.Drawing.Size(148, 24);
             this.cbConsole.TabIndex = 4;
@@ -770,7 +771,7 @@
             // btnCommand
             // 
             this.btnCommand.Location = new System.Drawing.Point(853, 571);
-            this.btnCommand.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCommand.Margin = new System.Windows.Forms.Padding(4);
             this.btnCommand.Name = "btnCommand";
             this.btnCommand.Size = new System.Drawing.Size(175, 28);
             this.btnCommand.TabIndex = 3;
@@ -781,7 +782,7 @@
             // btnCommandText
             // 
             this.btnCommandText.Location = new System.Drawing.Point(853, 535);
-            this.btnCommandText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCommandText.Margin = new System.Windows.Forms.Padding(4);
             this.btnCommandText.Name = "btnCommandText";
             this.btnCommandText.Size = new System.Drawing.Size(175, 28);
             this.btnCommandText.TabIndex = 2;
@@ -792,7 +793,7 @@
             // tbCommand
             // 
             this.tbCommand.Location = new System.Drawing.Point(695, 538);
-            this.tbCommand.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbCommand.Margin = new System.Windows.Forms.Padding(4);
             this.tbCommand.Name = "tbCommand";
             this.tbCommand.Size = new System.Drawing.Size(150, 22);
             this.tbCommand.TabIndex = 1;
@@ -803,7 +804,7 @@
             this.lbController.FormattingEnabled = true;
             this.lbController.ItemHeight = 16;
             this.lbController.Location = new System.Drawing.Point(0, 0);
-            this.lbController.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lbController.Margin = new System.Windows.Forms.Padding(4);
             this.lbController.Name = "lbController";
             this.lbController.Size = new System.Drawing.Size(1037, 500);
             this.lbController.TabIndex = 0;
@@ -811,9 +812,9 @@
             // tpBannlist
             // 
             this.tpBannlist.Location = new System.Drawing.Point(4, 24);
-            this.tpBannlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tpBannlist.Margin = new System.Windows.Forms.Padding(4);
             this.tpBannlist.Name = "tpBannlist";
-            this.tpBannlist.Size = new System.Drawing.Size(1037, 605);
+            this.tpBannlist.Size = new System.Drawing.Size(1037, 603);
             this.tpBannlist.TabIndex = 4;
             this.tpBannlist.Text = "Bannlist";
             this.tpBannlist.UseVisualStyleBackColor = true;
@@ -827,9 +828,9 @@
             this.Controls.Add(this.ssBottom);
             this.Controls.Add(this.msTop);
             this.MainMenuStrip = this.msTop;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmMain";
-            this.Text = "Terraria Dedicated Server Gui v*";
+            this.Text = "Terraria Dedicated Server Gui v";
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.msTop.ResumeLayout(false);
             this.msTop.PerformLayout();

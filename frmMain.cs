@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Threading;
-using Server;
+using Local.Server;
+using Local.UIClass;
+using Local.WebClass;
 
 namespace TerrariaDedicatedServerGUI
 {
@@ -54,6 +54,7 @@ namespace TerrariaDedicatedServerGUI
 
         private SetConfig tmpSetConfig = new SetConfig();
         private Controller tmpController = new Controller();
+        private GetIpAdress tmpGetIpAdress = new GetIpAdress();
 
         #endregion
 
@@ -62,18 +63,20 @@ namespace TerrariaDedicatedServerGUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.GetExternalIP(); //retrieve external ip adress *dirty retrieve should async
-
             this.tmpSetConfig.Init(this.sAppPath);
 
             this.tmpController.ProgressChanged += new Controller.EventHandler(tmpController_ProgressChanged);
             this.tmpController.Completed += new Controller.EventHandler(tmpController_Completed);
 
+            this.tmpGetIpAdress.Completed += new GetIpAdress.EventHandler(tmpGetIpAdress_Completed);
+
+            this.tmpGetIpAdress.Init();
+
             this.SetControls();
 
-            this.Text = String.Format("{0}{1}", this.Text, File.GetLastWriteTime(this.sAppPath + "TerrariaDedicatedServerGUI.vshost.exe")); //dirty dont use absolute String TerrariaDedicatedServerGUI.exe
+            this.Text = String.Format("{0}{1}", this.Text, File.GetLastWriteTime(this.sAppPath + "\\TerrariaDedicatedServerGUI.vshost.exe")); //dirty dont use absolute String TerrariaDedicatedServerGUI.exe
 
-            UIModClass.DoubleBufferControl.Buffer(this.lbController, true);
+            DoubleBufferControl.Buffer(this.lbController, true);
 
             if (Directory.Exists(this.tmpSetConfig.WorldPath))
             {//retrieve all Maps
@@ -82,6 +85,24 @@ namespace TerrariaDedicatedServerGUI
             }
 
             this.cbConsole.SelectedIndex = 0;
+        }
+
+        #endregion
+
+        #region GetIPADress - Completed
+        //GetIPADress - Completed
+
+        private void tmpGetIpAdress_Completed()
+        {
+            if (this.tmpGetIpAdress.Exception == null)
+            {
+                this.tsslIpAdress.Text = this.tmpGetIpAdress.IPAdress;
+            }
+            else
+            {
+                MessageBox.Show("Error retrieve IP Adress:\n" + this.tmpGetIpAdress.Exception.Message, "Error retrieve IP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.tsslIpAdress.Text = "unknown IP / try 127.0.0.1";
+            }
         }
 
         #endregion
@@ -150,41 +171,6 @@ namespace TerrariaDedicatedServerGUI
         private void btnSearchMap_Click(object sender, EventArgs e)
         {
 
-        }
-
-        #endregion
-
-        #region Function - Retrieve - External IP Adress
-        //Function - Retrieve - External IP Adress
-
-        private void GetExternalIP()
-        {
-            try
-            {
-                string sExtIpAdress = string.Empty;
-
-                using (WebClient wcGetString = new WebClient())
-                {
-                    Regex rexFilter = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
-
-                    sExtIpAdress = wcGetString.DownloadString("http://checkip.dyndns.org/");
-                    sExtIpAdress = rexFilter.Matches(sExtIpAdress)[0].ToString();
-
-                    if (!String.IsNullOrEmpty(sExtIpAdress))
-                    {
-                        this.tsslIpAdress.Text = sExtIpAdress;
-                    }
-                    else
-                    {
-                        this.tsslIpAdress.Text = "External IP Adress unknown";
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error retrieve External IP Adress\n" + ex.Message, "Error External IP", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
 
         #endregion
@@ -345,6 +331,41 @@ namespace TerrariaDedicatedServerGUI
 
         #endregion
 
+        #region Controls - ToolStripMenuItem - StartServer
+        //Controls - ToolStripMenuItem - StartServer
+
+        private void tsmiStartServer_Click(object sender, EventArgs e)
+        {
+            if (!this.tmpController.Running)
+            {
+                this.tcMain.SelectedTab = this.tbConsole;
+                this.lbController.Items.Add("start Server...");
+                this.lbController.Items.Add("");
+                this.tmpController.FileName = this.tmpSetConfig.ServerPath;
+                this.tmpController.DoJobAsync();
+                this.tbCommand.Select();
+            }
+        }
+
+        #endregion
+
+        #region Controls - Command - Buttons
+        //Controls - Command - Buttons
+
+        private void btnCommandText_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = this.tbCommand.Text;
+            this.tbCommand.Clear();
+            this.tbCommand.Select();
+        }
+
+        private void btnCommand_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = this.cbConsole.SelectedItem.ToString();
+        }
+
+        #endregion
+
         #region Controller - ProgressChanged
         //Controller - ProgressChanged
 
@@ -368,13 +389,19 @@ namespace TerrariaDedicatedServerGUI
 
         private void tmpController_Completed()
         {
-            string sRunning = "Server offline";
+            string sRunning = String.Empty;
 
             if (this.tmpController.Running)
             {
                 sRunning = "Server online";
             }
+            else
+            {
+                sRunning = "Server offline";
+            }
             this.tsslServerValue.Text = String.Format("{0} Player, {1}", this.tmpController.Player, sRunning);
+            this.lbController.Items.Add(sRunning);
+            this.lbController.SelectedIndex = this.lbController.Items.Count - 1;
         }
 
         #endregion
@@ -401,38 +428,6 @@ namespace TerrariaDedicatedServerGUI
 
         #endregion
 
-        #region Controls - ToolStripMenuItem - StartServer
-        //Controls - ToolStripMenuItem - StartServer
-
-        private void tsmiStartServer_Click(object sender, EventArgs e)
-        {
-            this.tcMain.SelectedTab = this.tbConsole;
-            this.lbController.Items.Add("start Server...");
-            this.lbController.Items.Add("");
-            this.tmpController.FileName = this.tmpSetConfig.ServerPath;
-            this.tmpController.DoJobAsync();
-            this.tbCommand.Select();
-        }
-
-        #endregion
-
-        #region Controls - Command - Buttons
-        //Controls - Command - Buttons
-
-        private void btnCommandText_Click(object sender, EventArgs e)
-        {
-            this.tmpController.Command = this.tbCommand.Text;
-            this.tbCommand.Clear();
-            this.tbCommand.Select();
-        }
-
-        private void btnCommand_Click(object sender, EventArgs e)
-        {
-            this.tmpController.Command = this.cbConsole.SelectedItem.ToString();
-        }
-
-        #endregion
-
         #region Controls - ToolStripMenuItem - TopMenu - Exit
         //Controls - ToolStripMenuItem - TopMenu - Exit
 
@@ -441,9 +436,18 @@ namespace TerrariaDedicatedServerGUI
             Application.Exit();
         }
 
+        #endregion
+
+        #region Form - Closing
+        //Form - Closing
+
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.tmpController.RequestExit();
+            if (this.tmpController.Running)
+            {
+                MessageBox.Show("Server is still running!\nPlease Shutdown Server by Console with exit or exit-nosave", "Server still running", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true;
+            }
         }
 
         #endregion

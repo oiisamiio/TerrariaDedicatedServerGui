@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Server
+namespace Local.Server
 {
     class Controller : IDisposable
     {
@@ -152,7 +152,10 @@ namespace Server
 
         public void DoJobAsync()
         {
-            this.bwHelper.RunWorkerAsync();
+            if (!this.bwHelper.IsBusy)
+            {
+                this.bwHelper.RunWorkerAsync();
+            }
         }
 
         #endregion
