@@ -20,7 +20,7 @@ namespace Local.Server
         private Process pController;
 
         private String sFileName = String.Empty;
-        private String sArguments = String.Empty;
+        private StringBuilder sbArguments = new StringBuilder();
         private String sBufferOut = String.Empty;
 
         private Int32 iPlayer = 0;
@@ -36,12 +36,12 @@ namespace Local.Server
 
         public String FileName
         {//FileName
-            set { this.sFileName = value; }
+            set { this.sFileName = value + "\\TerrariaServer.exe"; }
         }
 
         public String Arguments
         {//Arguments
-            set { this.sArguments = value; }
+            set { this.sbArguments.AppendLine(value); }
         }
 
         public String Command
@@ -185,7 +185,7 @@ namespace Local.Server
                 this.pController.EnableRaisingEvents = true;
 
                 this.pController.StartInfo.FileName = this.sFileName;
-                this.pController.StartInfo.Arguments = this.sArguments;
+                this.pController.StartInfo.Arguments = this.sbArguments.ToString().Replace("\r", "").Replace("\n", " ");
 
                 this.pController.OutputDataReceived += pController_OutputDataReceived;
                 this.pController.ErrorDataReceived += pController_ErrorDataReceived;
@@ -244,6 +244,7 @@ namespace Local.Server
 
         private void pController_Exited(object sender, EventArgs e)
         {
+            this.sbArguments.Clear();
             this.bRunning = false;
         }
 

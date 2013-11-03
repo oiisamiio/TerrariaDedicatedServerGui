@@ -112,32 +112,28 @@ namespace TerrariaDedicatedServerGUI
 
         private void btnServerPath_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofdServer = new OpenFileDialog())
+            using (FolderBrowserDialog fbdServer = new FolderBrowserDialog())
             {
                 string sProgramX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
                 if (Directory.Exists(sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\"))
                 {
-                    ofdServer.InitialDirectory = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
+                    fbdServer.SelectedPath = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
+                    fbdServer.Description = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
                 }
 
-                ofdServer.CheckFileExists = true;
-                ofdServer.CheckPathExists = true;
-                ofdServer.Multiselect = false;
-                ofdServer.Filter = "TerrariaServer.exe|*.exe";
+                fbdServer.ShowDialog();
 
-                ofdServer.ShowDialog();
-
-                if (ofdServer.FileName != null && !String.IsNullOrEmpty(ofdServer.FileName))
+                if (fbdServer.SelectedPath != null && !String.IsNullOrEmpty(fbdServer.SelectedPath) && File.Exists(fbdServer.SelectedPath + "\\TerrariaServer.exe"))
                 {
-                    this.tmpSetConfig.ServerPath = ofdServer.FileName;
+                    this.tmpSetConfig.ServerPath = fbdServer.SelectedPath;
                     this.tbServerPath.Text = this.tmpSetConfig.ServerPath;
                 }
             }
         }
 
         private void btnSearchServer_Click(object sender, EventArgs e)
-        {
+        {//ToDo:
 
         }
 
@@ -156,7 +152,7 @@ namespace TerrariaDedicatedServerGUI
                 {
                     fbdMaps.SelectedPath = sUserMyDocs + "\\My Games\\Terraria\\Worlds\\";
                 }
-                fbdMaps.Description = "World Map Path. \\Terraria\\Worlds\\";
+                fbdMaps.Description = sUserMyDocs + "\\My Games\\Terraria\\Worlds\\";
 
                 fbdMaps.ShowDialog();
 
@@ -339,9 +335,28 @@ namespace TerrariaDedicatedServerGUI
             if (!this.tmpController.Running)
             {
                 this.tcMain.SelectedTab = this.tbConsole;
+
                 this.lbController.Items.Add("start Server...");
                 this.lbController.Items.Add("");
+
+                this.tmpController.Arguments = "-config " + this.tmpSetConfig.ServerPath + "\\serverconfig.txt";
+                this.tmpController.Arguments = "-port " + this.tmpSetConfig.Port.ToString();
+                this.tmpController.Arguments = "-players " + this.tmpSetConfig.Players.ToString();
+                if (this.tmpSetConfig.Password.Length >= 1)
+                {
+                    this.tmpController.Arguments = "-password " + this.tmpSetConfig.Password;
+                }
+                if (this.lbMaps.SelectedIndex != -1)
+                {
+                    this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
+                }
+                this.tmpController.Arguments = "-banlist " + this.tmpSetConfig.ServerPath + "banlist.txt";
+                if (this.tmpSetConfig.Secure)
+                {
+                    this.tmpController.Arguments = "-secure";
+                }
                 this.tmpController.FileName = this.tmpSetConfig.ServerPath;
+
                 this.tmpController.DoJobAsync();
                 this.tbCommand.Select();
             }

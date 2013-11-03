@@ -15,3 +15,7 @@ Actual Restrictions:
 
 Knowing Bugs (Please Report Bugs):  
 * none
+
+RoadMap  
+* send xx times Motd as Chat Message to Players
+* add Server Logging
