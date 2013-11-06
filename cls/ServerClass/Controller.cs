@@ -17,6 +17,18 @@ namespace Local.Server
         private Boolean disposed = false;
         private Boolean bExitForced = false;
 
+        private Boolean bLockVersion = false;
+        private String sVersion = String.Empty;
+
+        private Boolean bAllowAdmin = false;
+        private String sAdmin = String.Empty;
+
+        private Boolean bLockTime = false;
+
+        private Boolean bAllowUserTime = false;
+
+        private Int64 iCount = 0;
+
         private Process pController;
 
         private String sFileName = String.Empty;
@@ -53,6 +65,21 @@ namespace Local.Server
                     this.pController.StandardInput.WriteLine(value);
                 }
             }
+        }
+
+        public Boolean AllowAdmin
+        {//Allow Admin (required for Admin Chat Message)
+            set { this.bAllowAdmin = value; }
+        }
+
+        public String Admin
+        {//Admin Name (required for Admin Chat Message)
+            set { this.sAdmin = value; }
+        }
+
+        public Boolean AllowUserTime
+        {//Allow User to change Time
+            set { this.bAllowUserTime = value; }
         }
 
         public Int32 Player
@@ -219,9 +246,24 @@ namespace Local.Server
 
         private void pController_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
+            this.iCount += 1; //raise received Messages Count +1
+
             if (e.Data != null)
             {
-                this.sBufferOut = e.Data;
+                this.sBufferOut = e.Data.ToLower();
+
+                if (this.iCount <= 5 && !this.bLockVersion) //workarround get Terraria Server vx.x.x
+                {
+                    if (this.sBufferOut.Contains("terraria server v"))
+                    {
+                        this.sVersion = sBufferOut;
+                        this.bLockVersion = true;
+                    }
+                }
+                else
+                {
+                    this.sBufferOut = this.sBufferOut.Replace(this.sVersion, "");
+                }
 
                 if (this.sBufferOut.Contains("has joined"))
                 {
@@ -231,6 +273,50 @@ namespace Local.Server
                 if (this.sBufferOut.Contains("has left"))
                 {
                     iPlayer -= 1;
+                }
+
+                //dirty! User could type Chat Message: blah <ADMINNAME> SERVER COMMAND
+                //ToDo: fix it
+                if (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin.ToLower() + "> "))
+                {
+                    this.pController.StandardInput.WriteLine(this.sBufferOut.Replace("<" + this.sAdmin.ToLower() + "> ", "").Replace(": ", ""));
+                }
+                else
+                {
+                    if (this.bLockTime && this.sBufferOut.Contains("time") && !this.sBufferOut.Contains("<server>"))
+                    {//Server send back Chat Message: time (Step 2)
+                        this.bLockTime = false;
+                        this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
+                    }
+
+                    if (this.sBufferOut.Contains("> time") && !this.sBufferOut.Contains("<server>"))
+                    {//User send Chat Message: time (Step 1)
+                        this.bLockTime = true;
+                        this.pController.StandardInput.WriteLine("time");
+                    }
+
+                    if (this.bAllowUserTime)
+                    {//dawn, noon, dusk or midnight
+                        if (this.sBufferOut.Contains("> dawn"))
+                        {
+                            this.pController.StandardInput.WriteLine("dawn");
+                        }
+
+                        if (this.sBufferOut.Contains("> noon"))
+                        {
+                            this.pController.StandardInput.WriteLine("noon");
+                        }
+
+                        if (this.sBufferOut.Contains("> dusk"))
+                        {
+                            this.pController.StandardInput.WriteLine("dusk");
+                        }
+
+                        if (this.sBufferOut.Contains("> midnight"))
+                        {
+                            this.pController.StandardInput.WriteLine("midnight");
+                        }
+                    }
                 }
 
                 this.SetProgressChanged();

@@ -84,6 +84,14 @@
             this.tbCommand = new System.Windows.Forms.TextBox();
             this.lbController = new System.Windows.Forms.ListBox();
             this.tpBannlist = new System.Windows.Forms.TabPage();
+            this.btnChatText = new System.Windows.Forms.Button();
+            this.tbCommandChat = new System.Windows.Forms.TextBox();
+            this.btnCommandExitNoS = new System.Windows.Forms.Button();
+            this.btnCommandExit = new System.Windows.Forms.Button();
+            this.chbAdmin = new System.Windows.Forms.CheckBox();
+            this.tbAdmin = new System.Windows.Forms.TextBox();
+            this.btnCommandSave = new System.Windows.Forms.Button();
+            this.chbUserTime = new System.Windows.Forms.CheckBox();
             this.msTop.SuspendLayout();
             this.ssBottom.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -121,21 +129,21 @@
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(152, 28);
+            this.tsmiSave.Size = new System.Drawing.Size(117, 28);
             this.tsmiSave.Text = "&Save";
             this.tsmiSave.Click += new System.EventHandler(this.tsmiSave_Click);
             // 
             // tsmiLoad
             // 
             this.tsmiLoad.Name = "tsmiLoad";
-            this.tsmiLoad.Size = new System.Drawing.Size(152, 28);
+            this.tsmiLoad.Size = new System.Drawing.Size(117, 28);
             this.tsmiLoad.Text = "&Load";
             this.tsmiLoad.Click += new System.EventHandler(this.tsmiLoad_Click);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(152, 28);
+            this.tsmiExit.Size = new System.Drawing.Size(117, 28);
             this.tsmiExit.Text = "&Exit";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -664,7 +672,7 @@
             this.tpMotd.Location = new System.Drawing.Point(4, 24);
             this.tpMotd.Margin = new System.Windows.Forms.Padding(4);
             this.tpMotd.Name = "tpMotd";
-            this.tpMotd.Size = new System.Drawing.Size(1037, 603);
+            this.tpMotd.Size = new System.Drawing.Size(1037, 599);
             this.tpMotd.TabIndex = 1;
             this.tpMotd.Text = "Motd";
             this.tpMotd.UseVisualStyleBackColor = true;
@@ -677,7 +685,7 @@
             this.flpMotd.Location = new System.Drawing.Point(0, 0);
             this.flpMotd.Margin = new System.Windows.Forms.Padding(4);
             this.flpMotd.Name = "flpMotd";
-            this.flpMotd.Size = new System.Drawing.Size(1037, 603);
+            this.flpMotd.Size = new System.Drawing.Size(1037, 599);
             this.flpMotd.TabIndex = 0;
             // 
             // lblMotd
@@ -710,7 +718,7 @@
             this.tpWorlds.Location = new System.Drawing.Point(4, 24);
             this.tpWorlds.Margin = new System.Windows.Forms.Padding(4);
             this.tpWorlds.Name = "tpWorlds";
-            this.tpWorlds.Size = new System.Drawing.Size(1037, 603);
+            this.tpWorlds.Size = new System.Drawing.Size(1037, 599);
             this.tpWorlds.TabIndex = 2;
             this.tpWorlds.Text = "Worlds";
             this.tpWorlds.UseVisualStyleBackColor = true;
@@ -723,11 +731,19 @@
             this.lbMaps.Location = new System.Drawing.Point(0, 0);
             this.lbMaps.Margin = new System.Windows.Forms.Padding(4);
             this.lbMaps.Name = "lbMaps";
-            this.lbMaps.Size = new System.Drawing.Size(1037, 603);
+            this.lbMaps.Size = new System.Drawing.Size(1037, 599);
             this.lbMaps.TabIndex = 0;
             // 
             // tbConsole
             // 
+            this.tbConsole.Controls.Add(this.chbUserTime);
+            this.tbConsole.Controls.Add(this.btnCommandSave);
+            this.tbConsole.Controls.Add(this.tbAdmin);
+            this.tbConsole.Controls.Add(this.chbAdmin);
+            this.tbConsole.Controls.Add(this.btnCommandExit);
+            this.tbConsole.Controls.Add(this.btnCommandExitNoS);
+            this.tbConsole.Controls.Add(this.btnChatText);
+            this.tbConsole.Controls.Add(this.tbCommandChat);
             this.tbConsole.Controls.Add(this.cbConsole);
             this.tbConsole.Controls.Add(this.btnCommand);
             this.tbConsole.Controls.Add(this.btnCommandText);
@@ -747,30 +763,22 @@
             this.cbConsole.Items.AddRange(new object[] {
             "help",
             "playing",
-            "clear",
-            "exit",
-            "exit-nosave",
-            "save",
-            "password",
-            "version",
             "time",
-            "port",
-            "maxplayers",
             "motd",
             "dawn",
             "noon",
             "dusk",
             "midnight",
             "settle"});
-            this.cbConsole.Location = new System.Drawing.Point(697, 571);
+            this.cbConsole.Location = new System.Drawing.Point(700, 534);
             this.cbConsole.Margin = new System.Windows.Forms.Padding(4);
             this.cbConsole.Name = "cbConsole";
-            this.cbConsole.Size = new System.Drawing.Size(148, 24);
+            this.cbConsole.Size = new System.Drawing.Size(150, 24);
             this.cbConsole.TabIndex = 4;
             // 
             // btnCommand
             // 
-            this.btnCommand.Location = new System.Drawing.Point(853, 571);
+            this.btnCommand.Location = new System.Drawing.Point(858, 531);
             this.btnCommand.Margin = new System.Windows.Forms.Padding(4);
             this.btnCommand.Name = "btnCommand";
             this.btnCommand.Size = new System.Drawing.Size(175, 28);
@@ -781,7 +789,7 @@
             // 
             // btnCommandText
             // 
-            this.btnCommandText.Location = new System.Drawing.Point(853, 535);
+            this.btnCommandText.Location = new System.Drawing.Point(858, 495);
             this.btnCommandText.Margin = new System.Windows.Forms.Padding(4);
             this.btnCommandText.Name = "btnCommandText";
             this.btnCommandText.Size = new System.Drawing.Size(175, 28);
@@ -792,7 +800,7 @@
             // 
             // tbCommand
             // 
-            this.tbCommand.Location = new System.Drawing.Point(695, 538);
+            this.tbCommand.Location = new System.Drawing.Point(700, 498);
             this.tbCommand.Margin = new System.Windows.Forms.Padding(4);
             this.tbCommand.Name = "tbCommand";
             this.tbCommand.Size = new System.Drawing.Size(150, 22);
@@ -806,7 +814,7 @@
             this.lbController.Location = new System.Drawing.Point(0, 0);
             this.lbController.Margin = new System.Windows.Forms.Padding(4);
             this.lbController.Name = "lbController";
-            this.lbController.Size = new System.Drawing.Size(1037, 500);
+            this.lbController.Size = new System.Drawing.Size(1037, 452);
             this.lbController.TabIndex = 0;
             // 
             // tpBannlist
@@ -814,10 +822,94 @@
             this.tpBannlist.Location = new System.Drawing.Point(4, 24);
             this.tpBannlist.Margin = new System.Windows.Forms.Padding(4);
             this.tpBannlist.Name = "tpBannlist";
-            this.tpBannlist.Size = new System.Drawing.Size(1037, 603);
+            this.tpBannlist.Size = new System.Drawing.Size(1037, 599);
             this.tpBannlist.TabIndex = 4;
             this.tpBannlist.Text = "Bannlist";
             this.tpBannlist.UseVisualStyleBackColor = true;
+            // 
+            // btnChatText
+            // 
+            this.btnChatText.Location = new System.Drawing.Point(858, 567);
+            this.btnChatText.Margin = new System.Windows.Forms.Padding(4);
+            this.btnChatText.Name = "btnChatText";
+            this.btnChatText.Size = new System.Drawing.Size(175, 28);
+            this.btnChatText.TabIndex = 6;
+            this.btnChatText.Text = "Send Chat Message";
+            this.btnChatText.UseVisualStyleBackColor = true;
+            this.btnChatText.Click += new System.EventHandler(this.btnChatText_Click);
+            // 
+            // tbCommandChat
+            // 
+            this.tbCommandChat.Location = new System.Drawing.Point(600, 570);
+            this.tbCommandChat.Margin = new System.Windows.Forms.Padding(4);
+            this.tbCommandChat.Name = "tbCommandChat";
+            this.tbCommandChat.Size = new System.Drawing.Size(250, 22);
+            this.tbCommandChat.TabIndex = 5;
+            this.tbCommandChat.Text = "Hello World!";
+            // 
+            // btnCommandExitNoS
+            // 
+            this.btnCommandExitNoS.Location = new System.Drawing.Point(4, 567);
+            this.btnCommandExitNoS.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCommandExitNoS.Name = "btnCommandExitNoS";
+            this.btnCommandExitNoS.Size = new System.Drawing.Size(175, 28);
+            this.btnCommandExitNoS.TabIndex = 7;
+            this.btnCommandExitNoS.Text = "Send Exit NoSave";
+            this.btnCommandExitNoS.UseVisualStyleBackColor = true;
+            this.btnCommandExitNoS.Click += new System.EventHandler(this.btnCommandExitNoS_Click);
+            // 
+            // btnCommandExit
+            // 
+            this.btnCommandExit.Location = new System.Drawing.Point(4, 531);
+            this.btnCommandExit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCommandExit.Name = "btnCommandExit";
+            this.btnCommandExit.Size = new System.Drawing.Size(175, 28);
+            this.btnCommandExit.TabIndex = 8;
+            this.btnCommandExit.Text = "Send Save and Exit";
+            this.btnCommandExit.UseVisualStyleBackColor = true;
+            this.btnCommandExit.Click += new System.EventHandler(this.btnCommandExit_Click);
+            // 
+            // chbAdmin
+            // 
+            this.chbAdmin.AutoSize = true;
+            this.chbAdmin.Location = new System.Drawing.Point(338, 525);
+            this.chbAdmin.Name = "chbAdmin";
+            this.chbAdmin.Size = new System.Drawing.Size(212, 38);
+            this.chbAdmin.TabIndex = 9;
+            this.chbAdmin.Text = "Allow Admin Chat Commands\r\nAdmin Name:";
+            this.chbAdmin.UseVisualStyleBackColor = true;
+            this.chbAdmin.CheckedChanged += new System.EventHandler(this.chbAdmin_CheckedChanged);
+            // 
+            // tbAdmin
+            // 
+            this.tbAdmin.Location = new System.Drawing.Point(338, 570);
+            this.tbAdmin.Margin = new System.Windows.Forms.Padding(4);
+            this.tbAdmin.Name = "tbAdmin";
+            this.tbAdmin.Size = new System.Drawing.Size(212, 22);
+            this.tbAdmin.TabIndex = 10;
+            this.tbAdmin.TextChanged += new System.EventHandler(this.tbAdmin_TextChanged);
+            // 
+            // btnCommandSave
+            // 
+            this.btnCommandSave.Location = new System.Drawing.Point(4, 495);
+            this.btnCommandSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCommandSave.Name = "btnCommandSave";
+            this.btnCommandSave.Size = new System.Drawing.Size(175, 28);
+            this.btnCommandSave.TabIndex = 11;
+            this.btnCommandSave.Text = "Send Save Command";
+            this.btnCommandSave.UseVisualStyleBackColor = true;
+            this.btnCommandSave.Click += new System.EventHandler(this.btnCommandSave_Click);
+            // 
+            // chbUserTime
+            // 
+            this.chbUserTime.AutoSize = true;
+            this.chbUserTime.Location = new System.Drawing.Point(338, 495);
+            this.chbUserTime.Name = "chbUserTime";
+            this.chbUserTime.Size = new System.Drawing.Size(173, 21);
+            this.chbUserTime.TabIndex = 12;
+            this.chbUserTime.Text = "User can change Time";
+            this.chbUserTime.UseVisualStyleBackColor = true;
+            this.chbUserTime.CheckedChanged += new System.EventHandler(this.chbUserTime_CheckedChanged);
             // 
             // frmMain
             // 
@@ -909,6 +1001,14 @@
         private System.Windows.Forms.Button btnCommand;
         private System.Windows.Forms.ToolStripStatusLabel tsslServerValue;
         private System.Windows.Forms.TabPage tpBannlist;
+        private System.Windows.Forms.Button btnCommandExit;
+        private System.Windows.Forms.Button btnCommandExitNoS;
+        private System.Windows.Forms.Button btnChatText;
+        private System.Windows.Forms.TextBox tbCommandChat;
+        private System.Windows.Forms.TextBox tbAdmin;
+        private System.Windows.Forms.CheckBox chbAdmin;
+        private System.Windows.Forms.Button btnCommandSave;
+        private System.Windows.Forms.CheckBox chbUserTime;
     }
 }
 

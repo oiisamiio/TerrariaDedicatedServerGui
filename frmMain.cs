@@ -336,8 +336,26 @@ namespace TerrariaDedicatedServerGUI
             {
                 this.tcMain.SelectedTab = this.tbConsole;
 
-                this.lbController.Items.Add("start Server...");
+                if (this.lbMaps.SelectedIndex != -1)
+                {
+                    this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
+                }
+                else
+                {
+                    DialogResult drMessageBox;
+                    drMessageBox = MessageBox.Show("No Map selected, wan`t select a Map?", "no Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (drMessageBox == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        this.tcMain.SelectedIndex = 2;
+                        return;
+                    }
+                }
+
                 this.lbController.Items.Add("");
+                this.lbController.Items.Add("start Server... Please wait...");
+                this.lbController.Items.Add("");
+                this.lbController.SelectedIndex = this.lbController.Items.Count - 1;
 
                 this.tmpController.Arguments = "-config " + this.tmpSetConfig.ServerPath + "\\serverconfig.txt";
                 this.tmpController.Arguments = "-port " + this.tmpSetConfig.Port.ToString();
@@ -345,10 +363,6 @@ namespace TerrariaDedicatedServerGUI
                 if (this.tmpSetConfig.Password.Length >= 1)
                 {
                     this.tmpController.Arguments = "-password " + this.tmpSetConfig.Password;
-                }
-                if (this.lbMaps.SelectedIndex != -1)
-                {
-                    this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
                 }
                 this.tmpController.Arguments = "-banlist " + this.tmpSetConfig.ServerPath + "banlist.txt";
                 if (this.tmpSetConfig.Secure)
@@ -377,6 +391,54 @@ namespace TerrariaDedicatedServerGUI
         private void btnCommand_Click(object sender, EventArgs e)
         {
             this.tmpController.Command = this.cbConsole.SelectedItem.ToString();
+        }
+
+        private void btnCommandExit_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = "exit";
+        }
+
+        private void btnCommandExitNoS_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = "exit-nosave";
+        }
+
+        private void btnChatText_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = "say " + this.tbCommandChat.Text;
+        }
+
+        private void btnCommandSave_Click(object sender, EventArgs e)
+        {
+            this.tmpController.Command = "save";
+        }
+
+        #endregion
+
+        #region Controls - Admin
+        //Controls - Admin
+
+        private void tbAdmin_TextChanged(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(this.tbAdmin.Text))
+            {
+                this.tmpController.Admin = this.tbAdmin.Text;
+            }
+        }
+
+        private void chbAdmin_CheckedChanged(object sender, EventArgs e)
+        {
+            this.tmpController.AllowAdmin = this.chbAdmin.Checked;
+        }
+
+        #endregion
+
+        #region Controls - Allow User Time
+        //Allow User Time       
+
+        private void chbUserTime_CheckedChanged(object sender, EventArgs e)
+        {
+            this.tmpController.AllowUserTime = this.chbUserTime.Checked;
         }
 
         #endregion
