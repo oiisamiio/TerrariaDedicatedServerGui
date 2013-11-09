@@ -1,6 +1,6 @@
 ﻿#### Terraria Dedicated Server Graphic User Interface
 
-![Screenshot](http://www.web-regensburg.de/terraria/TerrariaDS.png "Screenshot")
+![Screenshot](http://www.web-regensburg.de/terraria/Terraria.png "Screenshot")
 
 Actual Features: 
 * Start Server
