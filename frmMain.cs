@@ -74,15 +74,11 @@ namespace TerrariaDedicatedServerGUI
 
             this.SetControls();
 
-            this.Text = String.Format("{0}{1}", this.Text, File.GetLastWriteTime(this.sAppPath + "\\TerrariaDedicatedServerGUI.vshost.exe")); //dirty dont use absolute String TerrariaDedicatedServerGUI.exe
+            this.Text = String.Format("{0}{1}", this.Text, File.GetLastWriteTime(Application.ExecutablePath));
 
             DoubleBufferControl.Buffer(this.lbController, true);
 
-            if (Directory.Exists(this.tmpSetConfig.WorldPath))
-            {//retrieve all Maps
-                String[] sBuffer = Directory.GetFiles(this.tmpSetConfig.WorldPath, "*.wld");
-                this.lbMaps.Items.AddRange(sBuffer);
-            }
+            this.GetMaps();
 
             this.cbConsole.SelectedIndex = 0;
         }
@@ -102,6 +98,37 @@ namespace TerrariaDedicatedServerGUI
             {
                 MessageBox.Show("Error retrieve IP Adress:\n" + this.tmpGetIpAdress.Exception.Message, "Error retrieve IP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tsslIpAdress.Text = "unknown IP / try 127.0.0.1";
+            }
+        }
+
+        #endregion
+
+        #region Function - GetMaps
+        //Function - GetMaps
+
+        private void GetMaps()
+        {
+            if (Directory.Exists(this.tmpSetConfig.WorldPath))
+            {//retrieve all Maps
+                String[] sBuffer = Directory.GetFiles(this.tmpSetConfig.WorldPath, "*.wld");
+                this.lbMaps.Items.AddRange(sBuffer);
+            }
+        }
+
+        #endregion
+
+        #region Controls - TabControl - SelectedIndexChanged
+        //Controls - TabControl - SelectedIndexChanged
+
+        private void tcMain_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (tcMain.SelectedIndex)
+            {
+                case 3:
+                    this.AcceptButton = this.btnCommandText;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -160,6 +187,8 @@ namespace TerrariaDedicatedServerGUI
                 {
                     this.tmpSetConfig.WorldPath = fbdMaps.SelectedPath;
                     this.tbWorldPath.Text = this.tmpSetConfig.WorldPath;
+
+                    this.GetMaps();
                 }
             }
         }
@@ -310,47 +339,52 @@ namespace TerrariaDedicatedServerGUI
 
         #endregion
 
-        #region Controls - TabControl - SelectedIndexChanged
-        //Controls - TabControl - SelectedIndexChanged
-
-        private void tcMain_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (tcMain.SelectedIndex)
-            {
-                case 3:
-                    this.AcceptButton = this.btnCommandText;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        #endregion
-
         #region Controls - ToolStripMenuItem - StartServer
         //Controls - ToolStripMenuItem - StartServer
 
         private void tsmiStartServer_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(this.tmpSetConfig.ServerPath))
+            {
+                MessageBox.Show("Setup Server Path first!", "Server Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (String.IsNullOrEmpty(this.tmpSetConfig.WorldPath))
+            {
+                MessageBox.Show("Setup World Path first!", "World Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (this.lbMaps.SelectedIndex != -1)
+            {
+                this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
+            }
+            else
+            {
+                DialogResult drMessageBox;
+                drMessageBox = MessageBox.Show("No Map selected, wan`t select a Map?", "no Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (drMessageBox == System.Windows.Forms.DialogResult.Yes)
+                {
+                    this.tcMain.SelectedIndex = 2;
+                    return;
+                }
+            }
+
             if (!this.tmpController.Running)
             {
-                this.tcMain.SelectedTab = this.tbConsole;
-
-                if (this.lbMaps.SelectedIndex != -1)
+                if (!File.Exists(this.tmpSetConfig.AppPath + "config.xml"))
                 {
-                    this.tmpController.Arguments = "-world " + "\"" + this.lbMaps.SelectedItem.ToString() + "\"";
-                }
-                else
-                {
-                    DialogResult drMessageBox;
-                    drMessageBox = MessageBox.Show("No Map selected, wan`t select a Map?", "no Map", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    this.tmpSetConfig.Error = false;
 
-                    if (drMessageBox == System.Windows.Forms.DialogResult.Yes)
+                    if (this.tmpSetConfig.WriteConfig()) //if WriteConfig throw Error
                     {
-                        this.tcMain.SelectedIndex = 2;
-                        return;
+                        MessageBox.Show("an Error occured during Save Config", "Error Save Config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
+
+                this.tcMain.SelectedTab = this.tbConsole;
 
                 this.lbController.Items.Add("");
                 this.lbController.Items.Add("start Server... Please wait...");
