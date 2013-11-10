@@ -24,6 +24,8 @@ namespace Local.Server
         private String sAdmin = String.Empty;
 
         private Boolean bLockTime = false;
+        private Boolean bLockMotd = false;
+        private Boolean bLockPlaying = false;
 
         private Boolean bAllowUserTime = false;
 
@@ -33,7 +35,9 @@ namespace Local.Server
 
         private String sFileName = String.Empty;
         private StringBuilder sbArguments = new StringBuilder();
+
         private String sBufferOut = String.Empty;
+        private String sBufferOutLower = String.Empty;
 
         private Int32 iPlayer = 0;
 
@@ -232,8 +236,8 @@ namespace Local.Server
 
         #endregion
 
-        #region Process - Receiver
-        //Process - Receiver
+        #region Process - Error Receiver
+        //Process - Error Receiver
 
         private void pController_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
@@ -244,17 +248,23 @@ namespace Local.Server
             }
         }
 
+        #endregion
+
+        #region Process - Data Receiver
+        //Process - Data Receiver
+
         private void pController_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             this.iCount += 1; //raise received Messages Count +1
 
             if (e.Data != null)
             {
-                this.sBufferOut = e.Data.ToLower();
+                this.sBufferOut = e.Data;
+                this.sBufferOutLower = e.Data.ToLower();
 
                 if (this.iCount <= 5 && !this.bLockVersion) //workarround get Terraria Server vx.x.x
                 {
-                    if (this.sBufferOut.Contains("terraria server v"))
+                    if (this.sBufferOutLower.Contains("terraria server v"))
                     {
                         this.sVersion = sBufferOut;
                         this.bLockVersion = true;
@@ -265,54 +275,78 @@ namespace Local.Server
                     this.sBufferOut = this.sBufferOut.Replace(this.sVersion, "");
                 }
 
-                if (this.sBufferOut.Contains("has joined"))
+                if (this.sBufferOutLower.Contains("has joined"))
                 {
                     iPlayer += 1;
                 }
 
-                if (this.sBufferOut.Contains("has left"))
+                if (this.sBufferOutLower.Contains("has left"))
                 {
                     iPlayer -= 1;
                 }
 
                 //dirty! User could type Chat Message: blah <ADMINNAME> SERVER COMMAND
                 //ToDo: fix it
-                if (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin.ToLower() + "> "))
+                if (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin + "> "))
                 {
-                    this.pController.StandardInput.WriteLine(this.sBufferOut.Replace("<" + this.sAdmin.ToLower() + "> ", "").Replace(": ", ""));
+                    this.pController.StandardInput.WriteLine(this.sBufferOut.Replace("<" + this.sAdmin + "> ", "").Replace(": ", ""));
                 }
                 else
                 {
-                    if (this.bLockTime && this.sBufferOut.Contains("time") && !this.sBufferOut.Contains("<server>"))
+                    if (this.bLockTime && this.sBufferOutLower.Contains("time") && !this.sBufferOut.Contains("<Server>"))
                     {//Server send back Chat Message: time (Step 2)
                         this.bLockTime = false;
                         this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
                     }
 
-                    if (this.sBufferOut.Contains("> time") && !this.sBufferOut.Contains("<server>"))
+                    if (this.sBufferOutLower.Contains("> time") && !this.sBufferOut.Contains("<Server>"))
                     {//User send Chat Message: time (Step 1)
                         this.bLockTime = true;
                         this.pController.StandardInput.WriteLine("time");
                     }
 
+                    if (this.bLockMotd && this.sBufferOutLower.Contains("motd") && !this.sBufferOut.Contains("<Server>"))
+                    {//Server send back Chat Message: motd (Step 2)
+                        this.bLockMotd = false;
+                        this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
+                    }
+
+                    if ((this.sBufferOutLower.Contains("> motd") || this.sBufferOutLower.Contains("help")) && !this.sBufferOut.Contains("<Server>"))
+                    {//User send Chat Message: motd (Step 1)
+                        this.bLockMotd = true;
+                        this.pController.StandardInput.WriteLine("motd");
+                    }
+
+                    if (this.bLockPlaying && this.sBufferOutLower.Contains("(") && this.sBufferOutLower.Contains(")") && !this.sBufferOut.Contains("<Server>"))
+                    {//Server send back Chat Message: playing (Step 2)
+                        this.bLockPlaying = false;
+                        this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
+                    }
+
+                    if (this.sBufferOutLower.Contains("> playing") && !this.sBufferOut.Contains("<Server>"))
+                    {//User send Chat Message: playing (Step 1)
+                        this.bLockPlaying = true;
+                        this.pController.StandardInput.WriteLine("playing");
+                    }
+
                     if (this.bAllowUserTime)
                     {//dawn, noon, dusk or midnight
-                        if (this.sBufferOut.Contains("> dawn"))
+                        if (this.sBufferOutLower.Contains("> dawn"))
                         {
                             this.pController.StandardInput.WriteLine("dawn");
                         }
 
-                        if (this.sBufferOut.Contains("> noon"))
+                        if (this.sBufferOutLower.Contains("> noon"))
                         {
                             this.pController.StandardInput.WriteLine("noon");
                         }
 
-                        if (this.sBufferOut.Contains("> dusk"))
+                        if (this.sBufferOutLower.Contains("> dusk"))
                         {
                             this.pController.StandardInput.WriteLine("dusk");
                         }
 
-                        if (this.sBufferOut.Contains("> midnight"))
+                        if (this.sBufferOutLower.Contains("> midnight"))
                         {
                             this.pController.StandardInput.WriteLine("midnight");
                         }
@@ -331,6 +365,7 @@ namespace Local.Server
         private void pController_Exited(object sender, EventArgs e)
         {
             this.sbArguments.Clear();
+            this.iPlayer = 0;
             this.bRunning = false;
         }
 

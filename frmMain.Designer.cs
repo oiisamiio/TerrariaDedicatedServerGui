@@ -661,7 +661,7 @@
             this.tpMotd.Controls.Add(this.flpMotd);
             this.tpMotd.Location = new System.Drawing.Point(4, 24);
             this.tpMotd.Name = "tpMotd";
-            this.tpMotd.Size = new System.Drawing.Size(776, 481);
+            this.tpMotd.Size = new System.Drawing.Size(776, 482);
             this.tpMotd.TabIndex = 1;
             this.tpMotd.Text = "Motd";
             this.tpMotd.UseVisualStyleBackColor = true;
@@ -673,7 +673,7 @@
             this.flpMotd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpMotd.Location = new System.Drawing.Point(0, 0);
             this.flpMotd.Name = "flpMotd";
-            this.flpMotd.Size = new System.Drawing.Size(776, 481);
+            this.flpMotd.Size = new System.Drawing.Size(776, 482);
             this.flpMotd.TabIndex = 0;
             // 
             // lblMotd
@@ -695,10 +695,12 @@
             this.tbMotd.Location = new System.Drawing.Point(3, 28);
             this.tbMotd.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.tbMotd.Name = "tbMotd";
-            this.tbMotd.Size = new System.Drawing.Size(700, 22);
+            this.tbMotd.Size = new System.Drawing.Size(765, 22);
             this.tbMotd.TabIndex = 2;
             this.tbMotd.Tag = "motd";
-            this.tbMotd.Text = "Please dont cut the purple trees!";
+            this.tbMotd.Text = "Please dont cut the purple trees! type time for Server Time! Type dawn, noon, dus" +
+    "k, midnight to change time (by default off). Type playing to show online Players" +
+    ". Type motd for this Message.";
             // 
             // tpWorlds
             // 
@@ -785,7 +787,7 @@
             // 
             // btnCommandExit
             // 
-            this.btnCommandExit.Location = new System.Drawing.Point(3, 403);
+            this.btnCommandExit.Location = new System.Drawing.Point(3, 432);
             this.btnCommandExit.Name = "btnCommandExit";
             this.btnCommandExit.Size = new System.Drawing.Size(131, 23);
             this.btnCommandExit.TabIndex = 8;
@@ -795,7 +797,7 @@
             // 
             // btnCommandExitNoS
             // 
-            this.btnCommandExitNoS.Location = new System.Drawing.Point(3, 432);
+            this.btnCommandExitNoS.Location = new System.Drawing.Point(3, 403);
             this.btnCommandExitNoS.Name = "btnCommandExitNoS";
             this.btnCommandExitNoS.Size = new System.Drawing.Size(131, 23);
             this.btnCommandExitNoS.TabIndex = 7;

@@ -23,4 +23,7 @@ Knowing Bugs (Please Report Bugs):
 RoadMap: 
 * add Server Logging
 * add Multi Server Support
+* add Multi Core Support for manage CPU Cores using Server/Client (Example Server use CPU Core 1, Client use CPU Core 2)
 * add Option: send Time Command and force Server Time to dawn, noon, dusk or midnight
+* Player Vote for Kick/Ban (Example 4 Player online: required votes xx > 4 / 2 min 2 votes)
+* Watchdog

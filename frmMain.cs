@@ -394,15 +394,25 @@ namespace TerrariaDedicatedServerGUI
                 this.tmpController.Arguments = "-config " + this.tmpSetConfig.ServerPath + "\\serverconfig.txt";
                 this.tmpController.Arguments = "-port " + this.tmpSetConfig.Port.ToString();
                 this.tmpController.Arguments = "-players " + this.tmpSetConfig.Players.ToString();
+                this.tmpController.Arguments = "-motd \"" + this.tbMotd.Text + "\"";
+
                 if (this.tmpSetConfig.Password.Length >= 1)
                 {
                     this.tmpController.Arguments = "-password " + this.tmpSetConfig.Password;
                 }
+
                 this.tmpController.Arguments = "-banlist " + this.tmpSetConfig.ServerPath + "banlist.txt";
+
                 if (this.tmpSetConfig.Secure)
                 {
                     this.tmpController.Arguments = "-secure";
                 }
+
+                if (this.tmpSetConfig.NoUPNP)
+                {
+                    this.tmpController.Arguments = "-noupnp";
+                }
+
                 this.tmpController.FileName = this.tmpSetConfig.ServerPath;
 
                 this.tmpController.DoJobAsync();
