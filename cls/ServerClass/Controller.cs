@@ -296,7 +296,7 @@ namespace Local.Server
                     if (this.bLockTime && this.sBufferOutLower.Contains("time") && !this.sBufferOut.Contains("<Server>"))
                     {//Server send back Chat Message: time (Step 2)
                         this.bLockTime = false;
-                        this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
+                        this.pController.StandardInput.WriteLine("say Game " + this.sBufferOut + " - Server Time: " + DateTime.Now.ToShortTimeString());
                     }
 
                     if (this.sBufferOutLower.Contains("> time") && !this.sBufferOut.Contains("<Server>"))
