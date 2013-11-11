@@ -92,6 +92,7 @@
             this.tbCommand = new System.Windows.Forms.TextBox();
             this.lbController = new System.Windows.Forms.ListBox();
             this.tpBannlist = new System.Windows.Forms.TabPage();
+            this.lblExampleAdmin = new System.Windows.Forms.Label();
             this.msTop.SuspendLayout();
             this.ssBottom.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -199,7 +200,7 @@
             this.tpSettings.Controls.Add(this.flpSettings);
             this.tpSettings.Location = new System.Drawing.Point(4, 24);
             this.tpSettings.Name = "tpSettings";
-            this.tpSettings.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tpSettings.Padding = new System.Windows.Forms.Padding(3);
             this.tpSettings.Size = new System.Drawing.Size(776, 482);
             this.tpSettings.TabIndex = 0;
             this.tpSettings.Text = "Settings";
@@ -707,7 +708,7 @@
             this.tpWorlds.Controls.Add(this.lbMaps);
             this.tpWorlds.Location = new System.Drawing.Point(4, 24);
             this.tpWorlds.Name = "tpWorlds";
-            this.tpWorlds.Size = new System.Drawing.Size(776, 481);
+            this.tpWorlds.Size = new System.Drawing.Size(776, 482);
             this.tpWorlds.TabIndex = 2;
             this.tpWorlds.Text = "Worlds";
             this.tpWorlds.UseVisualStyleBackColor = true;
@@ -718,11 +719,12 @@
             this.lbMaps.FormattingEnabled = true;
             this.lbMaps.Location = new System.Drawing.Point(0, 0);
             this.lbMaps.Name = "lbMaps";
-            this.lbMaps.Size = new System.Drawing.Size(776, 481);
+            this.lbMaps.Size = new System.Drawing.Size(776, 482);
             this.lbMaps.TabIndex = 0;
             // 
             // tbConsole
             // 
+            this.tbConsole.Controls.Add(this.lblExampleAdmin);
             this.tbConsole.Controls.Add(this.chbUserTime);
             this.tbConsole.Controls.Add(this.btnCommandSave);
             this.tbConsole.Controls.Add(this.tbAdmin);
@@ -747,7 +749,7 @@
             // 
             this.chbUserTime.AutoSize = true;
             this.chbUserTime.Location = new System.Drawing.Point(254, 373);
-            this.chbUserTime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chbUserTime.Margin = new System.Windows.Forms.Padding(2);
             this.chbUserTime.Name = "chbUserTime";
             this.chbUserTime.Size = new System.Drawing.Size(134, 17);
             this.chbUserTime.TabIndex = 12;
@@ -777,7 +779,7 @@
             // 
             this.chbAdmin.AutoSize = true;
             this.chbAdmin.Location = new System.Drawing.Point(254, 394);
-            this.chbAdmin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chbAdmin.Margin = new System.Windows.Forms.Padding(2);
             this.chbAdmin.Name = "chbAdmin";
             this.chbAdmin.Size = new System.Drawing.Size(163, 30);
             this.chbAdmin.TabIndex = 9;
@@ -881,10 +883,19 @@
             // 
             this.tpBannlist.Location = new System.Drawing.Point(4, 24);
             this.tpBannlist.Name = "tpBannlist";
-            this.tpBannlist.Size = new System.Drawing.Size(776, 481);
+            this.tpBannlist.Size = new System.Drawing.Size(776, 482);
             this.tpBannlist.TabIndex = 4;
             this.tpBannlist.Text = "Bannlist";
             this.tpBannlist.UseVisualStyleBackColor = true;
+            // 
+            // lblExampleAdmin
+            // 
+            this.lblExampleAdmin.AutoSize = true;
+            this.lblExampleAdmin.Location = new System.Drawing.Point(251, 452);
+            this.lblExampleAdmin.Name = "lblExampleAdmin";
+            this.lblExampleAdmin.Size = new System.Drawing.Size(177, 26);
+            this.lblExampleAdmin.TabIndex = 13;
+            this.lblExampleAdmin.Text = "Example: /noon as Admin command\r\n                 noon as non Admin";
             // 
             // frmMain
             // 
@@ -984,6 +995,7 @@
         private System.Windows.Forms.CheckBox chbAdmin;
         private System.Windows.Forms.Button btnCommandSave;
         private System.Windows.Forms.CheckBox chbUserTime;
+        private System.Windows.Forms.Label lblExampleAdmin;
     }
 }
 

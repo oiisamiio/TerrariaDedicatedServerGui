@@ -99,11 +99,11 @@ namespace Local.WebClass
 
                 using (WebClient wcGetString = new WebClient())
                 {
-                    Regex rexFilter = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
+                    Regex regexFilter = new Regex(@"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}");
 
                     sExtIpAdress = wcGetString.DownloadString("http://checkip.dyndns.org/");
-                    sExtIpAdress = rexFilter.Matches(sExtIpAdress)[0].ToString();
-
+                    sExtIpAdress = regexFilter.Matches(sExtIpAdress)[0].ToString();
+                    
                     if (!String.IsNullOrEmpty(sExtIpAdress))
                     {
                         this.sIPAdress = sExtIpAdress;

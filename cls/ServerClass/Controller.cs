@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
@@ -287,9 +288,15 @@ namespace Local.Server
 
                 //dirty! User could type Chat Message: blah <ADMINNAME> SERVER COMMAND
                 //ToDo: fix it
-                if (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin + "> "))
+                if (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin + "> /"))
                 {
-                    this.pController.StandardInput.WriteLine(this.sBufferOut.Replace("<" + this.sAdmin + "> ", "").Replace(": ", ""));
+                    String sBufferLocal = Regex.Replace(this.sBufferOut, "\\s+", "");
+
+                    sBufferLocal = Regex.Replace(sBufferLocal, "<" + this.sAdmin + ">", "");
+                    sBufferLocal = Regex.Replace(sBufferLocal, ":", "");
+                    sBufferLocal = Regex.Replace(sBufferLocal, "/", "");
+
+                    this.pController.StandardInput.WriteLine(sBufferLocal);
                 }
                 else
                 {
@@ -329,7 +336,7 @@ namespace Local.Server
                         this.pController.StandardInput.WriteLine("playing");
                     }
 
-                    if (this.bAllowUserTime)
+                    if (this.bAllowUserTime || (this.bAllowAdmin && this.sBufferOut.Contains("<" + this.sAdmin + ">")))
                     {//dawn, noon, dusk or midnight
                         if (this.sBufferOutLower.Contains("> dawn"))
                         {
