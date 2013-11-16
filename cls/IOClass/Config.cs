@@ -48,6 +48,10 @@ namespace Local.Server
 
         private String sMotd = "Please dont cut the purple trees!";
 
+        private Boolean bUserInteract = false; //allow User Commands via Chat
+        private Boolean bAdmin = false; //allow Admin Commands
+        private String sAdminName = String.Empty; //Admin Name
+
         private bool bError = false;
 
         #endregion
@@ -161,6 +165,24 @@ namespace Local.Server
         {
             get { return this.iNpcstream; }
             set { this.iNpcstream = value; }
+        }
+
+        public Boolean AllowUserInteract
+        {
+            get { return this.bUserInteract; }
+            set { this.bUserInteract = value; }
+        }
+
+        public Boolean AllowAdmin
+        {
+            get { return this.bAdmin; }
+            set { this.bAdmin = value; }
+        }
+
+        public String AdminName
+        {
+            get { return this.sAdminName; }
+            set { this.sAdminName = value; }
         }
 
         public Boolean Error
@@ -287,6 +309,15 @@ namespace Local.Server
                         case "motd":
                             this.sMotd = Convert.ToString(dr[1]);
                             break;
+                        case "userinteract":
+                            this.bUserInteract = Convert.ToBoolean(dr[1]);
+                            break;
+                        case "admin":
+                            this.bAdmin = Convert.ToBoolean(dr[1]);
+                            break;
+                        case "adminname":
+                            this.sAdminName = Convert.ToString(dr[1]);
+                            break;
                         default:
                             break;
                     }
@@ -383,6 +414,15 @@ namespace Local.Server
                         case "motd":
                             dr[1] = this.sMotd;
                             break;
+                        case "userinteract":
+                            dr[1] = this.bUserInteract;
+                            break;
+                        case "admin":
+                            dr[1] = this.bAdmin;
+                            break;
+                        case "adminname":
+                            dr[1] = this.sAdminName;
+                            break;
                         default:
                             break;
                     }
@@ -428,6 +468,9 @@ namespace Local.Server
             dtConfig.Rows.Add("priority", this.iPriority);
             dtConfig.Rows.Add("npcstream", this.iNpcstream);
             dtConfig.Rows.Add("motd", this.sMotd);
+            dtConfig.Rows.Add("userinteract", this.bUserInteract);
+            dtConfig.Rows.Add("admin", this.bAdmin);
+            dtConfig.Rows.Add("adminname", this.sAdminName);
         }
 
         #endregion

@@ -78,7 +78,8 @@
             this.tpWorlds = new System.Windows.Forms.TabPage();
             this.lbMaps = new System.Windows.Forms.ListBox();
             this.tbConsole = new System.Windows.Forms.TabPage();
-            this.chbUserTime = new System.Windows.Forms.CheckBox();
+            this.lblExampleAdmin = new System.Windows.Forms.Label();
+            this.chbUserInteract = new System.Windows.Forms.CheckBox();
             this.btnCommandSave = new System.Windows.Forms.Button();
             this.tbAdmin = new System.Windows.Forms.TextBox();
             this.chbAdmin = new System.Windows.Forms.CheckBox();
@@ -92,7 +93,6 @@
             this.tbCommand = new System.Windows.Forms.TextBox();
             this.lbController = new System.Windows.Forms.ListBox();
             this.tpBannlist = new System.Windows.Forms.TabPage();
-            this.lblExampleAdmin = new System.Windows.Forms.Label();
             this.msTop.SuspendLayout();
             this.ssBottom.SuspendLayout();
             this.tcMain.SuspendLayout();
@@ -725,7 +725,7 @@
             // tbConsole
             // 
             this.tbConsole.Controls.Add(this.lblExampleAdmin);
-            this.tbConsole.Controls.Add(this.chbUserTime);
+            this.tbConsole.Controls.Add(this.chbUserInteract);
             this.tbConsole.Controls.Add(this.btnCommandSave);
             this.tbConsole.Controls.Add(this.tbAdmin);
             this.tbConsole.Controls.Add(this.chbAdmin);
@@ -745,17 +745,26 @@
             this.tbConsole.Text = "Console";
             this.tbConsole.UseVisualStyleBackColor = true;
             // 
-            // chbUserTime
+            // lblExampleAdmin
             // 
-            this.chbUserTime.AutoSize = true;
-            this.chbUserTime.Location = new System.Drawing.Point(254, 373);
-            this.chbUserTime.Margin = new System.Windows.Forms.Padding(2);
-            this.chbUserTime.Name = "chbUserTime";
-            this.chbUserTime.Size = new System.Drawing.Size(134, 17);
-            this.chbUserTime.TabIndex = 12;
-            this.chbUserTime.Text = "User can change Time";
-            this.chbUserTime.UseVisualStyleBackColor = true;
-            this.chbUserTime.CheckedChanged += new System.EventHandler(this.chbUserTime_CheckedChanged);
+            this.lblExampleAdmin.AutoSize = true;
+            this.lblExampleAdmin.Location = new System.Drawing.Point(251, 452);
+            this.lblExampleAdmin.Name = "lblExampleAdmin";
+            this.lblExampleAdmin.Size = new System.Drawing.Size(177, 26);
+            this.lblExampleAdmin.TabIndex = 13;
+            this.lblExampleAdmin.Text = "Example: /noon as Admin command\r\n                 noon as non Admin";
+            // 
+            // chbUserInteract
+            // 
+            this.chbUserInteract.AutoSize = true;
+            this.chbUserInteract.Location = new System.Drawing.Point(254, 373);
+            this.chbUserInteract.Margin = new System.Windows.Forms.Padding(2);
+            this.chbUserInteract.Name = "chbUserInteract";
+            this.chbUserInteract.Size = new System.Drawing.Size(134, 17);
+            this.chbUserInteract.TabIndex = 12;
+            this.chbUserInteract.Text = "User can change Time";
+            this.chbUserInteract.UseVisualStyleBackColor = true;
+            this.chbUserInteract.CheckedChanged += new System.EventHandler(this.chbUserTime_CheckedChanged);
             // 
             // btnCommandSave
             // 
@@ -888,15 +897,6 @@
             this.tpBannlist.Text = "Bannlist";
             this.tpBannlist.UseVisualStyleBackColor = true;
             // 
-            // lblExampleAdmin
-            // 
-            this.lblExampleAdmin.AutoSize = true;
-            this.lblExampleAdmin.Location = new System.Drawing.Point(251, 452);
-            this.lblExampleAdmin.Name = "lblExampleAdmin";
-            this.lblExampleAdmin.Size = new System.Drawing.Size(177, 26);
-            this.lblExampleAdmin.TabIndex = 13;
-            this.lblExampleAdmin.Text = "Example: /noon as Admin command\r\n                 noon as non Admin";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -994,7 +994,7 @@
         private System.Windows.Forms.TextBox tbAdmin;
         private System.Windows.Forms.CheckBox chbAdmin;
         private System.Windows.Forms.Button btnCommandSave;
-        private System.Windows.Forms.CheckBox chbUserTime;
+        private System.Windows.Forms.CheckBox chbUserInteract;
         private System.Windows.Forms.Label lblExampleAdmin;
     }
 }

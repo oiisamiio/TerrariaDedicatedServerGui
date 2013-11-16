@@ -29,10 +29,11 @@ namespace Local.Server
         private Boolean bLockPlaying = false;
 
         private Boolean bAllowUserTime = false;
-
+        
         private Int64 iCount = 0;
 
         private Process pController;
+        private Int32 iPriority = 1;
 
         private String sFileName = String.Empty;
         private StringBuilder sbArguments = new StringBuilder();
@@ -100,6 +101,11 @@ namespace Local.Server
         public Boolean IsBusy
         {//IsBusy
             get { return this.bwHelper.IsBusy; }
+        }
+
+        public Int32 Priority
+        {
+            set { this.iPriority = value; }
         }
 
         public Boolean Running
@@ -216,6 +222,33 @@ namespace Local.Server
                 this.pController.StartInfo.CreateNoWindow = true;
                 this.pController.EnableRaisingEvents = true;
 
+                ProcessPriorityClass ppcController;
+
+                switch (this.iPriority)
+                {
+                    case 0:
+                        ppcController = ProcessPriorityClass.RealTime;
+                        break;
+                    case 1:
+                        ppcController = ProcessPriorityClass.High;
+                        break;
+                    case 2:
+                        ppcController = ProcessPriorityClass.AboveNormal;
+                        break;
+                    case 3:
+                        ppcController = ProcessPriorityClass.Normal;
+                        break;
+                    case 4:
+                        ppcController = ProcessPriorityClass.BelowNormal;
+                        break;
+                    case 5:
+                        ppcController = ProcessPriorityClass.Idle;
+                        break;
+                    default:
+                        ppcController = ProcessPriorityClass.Normal;
+                        break;
+                }
+                
                 this.pController.StartInfo.FileName = this.sFileName;
                 this.pController.StartInfo.Arguments = this.sbArguments.ToString().Replace("\r", "").Replace("\n", " ");
 
@@ -225,6 +258,8 @@ namespace Local.Server
                 this.pController.Exited += new System.EventHandler(pController_Exited);
 
                 this.pController.Start();
+
+                this.pController.PriorityClass = ppcController;
 
                 this.bRunning = true;
 

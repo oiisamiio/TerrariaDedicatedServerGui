@@ -21,6 +21,30 @@ namespace TerrariaDedicatedServerGUI
         {
             InitializeComponent();
 
+            //create EventHandler for Controls
+            this.AddEventHandler();
+        }
+
+        #endregion
+
+        #region Declaration
+        //Declaration
+
+        delegate void SetItemsCallback(string text);
+
+        private String sAppPath = Application.StartupPath;
+
+        private SetConfig tmpConfig = new SetConfig();
+        private Controller tmpController = new Controller();
+        private GetIpAdress tmpGetIpAdress = new GetIpAdress();
+
+        #endregion
+
+        #region Controls - Add - Eventhandler
+        //Controls - Events
+
+        private void AddEventHandler()
+        {
             this.cbAutoCreate.SelectedIndex = 0;
             this.cbLangauge.SelectedIndex = 0;
             this.cbPriority.SelectedIndex = 2;
@@ -39,23 +63,12 @@ namespace TerrariaDedicatedServerGUI
             this.tbNpcStream.Validated += new EventHandler(tbNpcStream_Validated);
             this.chbAutoShutDown.Validated += new EventHandler(chbAutoshutdown_Validated);
 
+            this.tbAdmin.TextChanged += new EventHandler(tbAdmin_TextChanged);
+
             this.tcMain.SelectedIndexChanged += new EventHandler(tcMain_SelectedIndexChanged);
 
             this.FormClosing += new FormClosingEventHandler(frmMain_FormClosing);
         }
-
-        #endregion
-
-        #region Declaration
-        //Declaration
-
-        delegate void SetItemsCallback(string text);
-
-        private String sAppPath = Application.StartupPath;
-
-        private SetConfig tmpSetConfig = new SetConfig();
-        private Controller tmpController = new Controller();
-        private GetIpAdress tmpGetIpAdress = new GetIpAdress();
 
         #endregion
 
@@ -64,7 +77,7 @@ namespace TerrariaDedicatedServerGUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Init(this.sAppPath);
+            this.tmpConfig.Init(this.sAppPath);
 
             this.tmpController.ProgressChanged += new Controller.EventHandler(tmpController_ProgressChanged);
             this.tmpController.Completed += new Controller.EventHandler(tmpController_Completed);
@@ -109,9 +122,9 @@ namespace TerrariaDedicatedServerGUI
 
         private void GetMaps()
         {
-            if (Directory.Exists(this.tmpSetConfig.WorldPath))
+            if (Directory.Exists(this.tmpConfig.WorldPath))
             {//retrieve all Maps
-                String[] sBuffer = Directory.GetFiles(this.tmpSetConfig.WorldPath, "*.wld");
+                String[] sBuffer = Directory.GetFiles(this.tmpConfig.WorldPath, "*.wld");
                 this.lbMaps.Items.AddRange(sBuffer);
             }
         }
@@ -147,13 +160,19 @@ namespace TerrariaDedicatedServerGUI
 
                 if (Directory.Exists(sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\"))
                 {
-                    fbdServer.SelectedPath = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
-                    fbdServer.Description = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
+                    sServerPath = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
                 }
                 else
                 {
                     sServerPath = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "SteamPath", "").ToString();
+                    if (!String.IsNullOrEmpty(sServerPath))
+                    {
+                        sServerPath = sServerPath.Replace("/", "\\") + "\\SteamApps\\common\\Terraria\\";
+                    }
                 }
+
+                fbdServer.SelectedPath = sServerPath;
+                fbdServer.Description = sServerPath;
 
                 fbdServer.ShowDialog();
 
@@ -164,8 +183,8 @@ namespace TerrariaDedicatedServerGUI
 
                 if (File.Exists(fbdServer.SelectedPath + "\\TerrariaServer.exe"))
                 {
-                    this.tmpSetConfig.ServerPath = fbdServer.SelectedPath;
-                    this.tbServerPath.Text = this.tmpSetConfig.ServerPath;
+                    this.tmpConfig.ServerPath = fbdServer.SelectedPath;
+                    this.tbServerPath.Text = this.tmpConfig.ServerPath;
                 }
             }
         }
@@ -196,8 +215,8 @@ namespace TerrariaDedicatedServerGUI
 
                 if (fbdMaps.SelectedPath != null && !String.IsNullOrEmpty(fbdMaps.SelectedPath))
                 {
-                    this.tmpSetConfig.WorldPath = fbdMaps.SelectedPath;
-                    this.tbWorldPath.Text = this.tmpSetConfig.WorldPath;
+                    this.tmpConfig.WorldPath = fbdMaps.SelectedPath;
+                    this.tbWorldPath.Text = this.tmpConfig.WorldPath;
 
                     this.GetMaps();
                 }
@@ -216,9 +235,9 @@ namespace TerrariaDedicatedServerGUI
 
         private void tsmiSave_Click(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Error = false;
+            this.tmpConfig.Error = false;
 
-            if (this.tmpSetConfig.WriteConfig()) //if WriteConfig throw Error
+            if (this.tmpConfig.WriteConfig()) //if WriteConfig throw Error
             {
                 MessageBox.Show("an Error occured during Save Config", "Error Save Config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -232,9 +251,9 @@ namespace TerrariaDedicatedServerGUI
         private void tsmiLoad_Click(object sender, EventArgs e)
         {
 
-            this.tmpSetConfig.Error = false;
+            this.tmpConfig.Error = false;
 
-            if (this.tmpSetConfig.ReadConfig()) //if ReadConfig throw Error
+            if (this.tmpConfig.ReadConfig()) //if ReadConfig throw Error
             {
                 MessageBox.Show("an Error occured during Load Config", "Error Load Config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -251,21 +270,25 @@ namespace TerrariaDedicatedServerGUI
 
         private void SetControls()
         {
-            this.tbServerPath.Text = this.tmpSetConfig.ServerPath;
-            this.tbWorldPath.Text = this.tmpSetConfig.WorldPath;
-            this.chbAutoCreate.Checked = this.tmpSetConfig.AutoCreate;
-            this.cbAutoCreate.SelectedIndex = this.tmpSetConfig.AutoCreateValue;
-            this.tbConfig.Text = this.tmpSetConfig.Config;
-            this.tbBanlist.Text = this.tmpSetConfig.BanList;
-            this.tbPort.Text = this.tmpSetConfig.Port.ToString();
-            this.tbPassword.Text = this.tmpSetConfig.Password;
-            this.tbMaxPlayer.Text = this.tmpSetConfig.Players.ToString();
-            this.chbSecure.Checked = this.tmpSetConfig.Secure;
-            this.chbUpnp.Checked = this.tmpSetConfig.NoUPNP;
-            this.cbLangauge.SelectedIndex = this.tmpSetConfig.Language;
-            this.cbPriority.SelectedIndex = this.tmpSetConfig.Priority;
-            this.tbNpcStream.Text = this.tmpSetConfig.NpcStream.ToString();
-            this.chbAutoShutDown.Checked = this.tmpSetConfig.AutoShutdown;
+            this.tbServerPath.Text = this.tmpConfig.ServerPath;
+            this.tbWorldPath.Text = this.tmpConfig.WorldPath;
+            this.chbAutoCreate.Checked = this.tmpConfig.AutoCreate;
+            this.cbAutoCreate.SelectedIndex = this.tmpConfig.AutoCreateValue;
+            this.tbConfig.Text = this.tmpConfig.Config;
+            this.tbBanlist.Text = this.tmpConfig.BanList;
+            this.tbPort.Text = this.tmpConfig.Port.ToString();
+            this.tbPassword.Text = this.tmpConfig.Password;
+            this.tbMaxPlayer.Text = this.tmpConfig.Players.ToString();
+            this.chbSecure.Checked = this.tmpConfig.Secure;
+            this.chbUpnp.Checked = this.tmpConfig.NoUPNP;
+            this.cbLangauge.SelectedIndex = this.tmpConfig.Language;
+            this.cbPriority.SelectedIndex = this.tmpConfig.Priority;
+            this.tbNpcStream.Text = this.tmpConfig.NpcStream.ToString();
+            this.chbAutoShutDown.Checked = this.tmpConfig.AutoShutdown;
+
+            this.chbUserInteract.Checked = this.tmpConfig.AllowUserInteract;
+            this.chbAdmin.Checked = this.tmpConfig.AllowAdmin;
+            this.tbAdmin.Text = this.tmpConfig.AdminName;
         }
 
         #endregion
@@ -275,7 +298,7 @@ namespace TerrariaDedicatedServerGUI
 
         private void chbAutoshutdown_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.AutoShutdown = this.chbAutoShutDown.Checked;
+            this.tmpConfig.AutoShutdown = this.chbAutoShutDown.Checked;
         }
 
         private void tbNpcStream_Validated(object sender, EventArgs e)
@@ -284,33 +307,33 @@ namespace TerrariaDedicatedServerGUI
 
             if (Int32.TryParse(this.tbNpcStream.Text, out iBuffer))
             {
-                this.tmpSetConfig.NpcStream = iBuffer;
+                this.tmpConfig.NpcStream = iBuffer;
             }
         }
 
         private void cbPriority_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Priority = this.cbPriority.SelectedIndex;
+            this.tmpConfig.Priority = this.cbPriority.SelectedIndex;
         }
 
         private void cbLangauge_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Language = this.cbLangauge.SelectedIndex;
+            this.tmpConfig.Language = this.cbLangauge.SelectedIndex;
         }
 
         private void chbUpnp_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.NoUPNP = this.chbUpnp.Checked;
+            this.tmpConfig.NoUPNP = this.chbUpnp.Checked;
         }
 
         private void chbSecure_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Secure = this.chbSecure.Checked;
+            this.tmpConfig.Secure = this.chbSecure.Checked;
         }
 
         private void tbPassword_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Password = this.tbPassword.Text;
+            this.tmpConfig.Password = this.tbPassword.Text;
         }
 
         private void tbPort_Validated(object sender, EventArgs e)
@@ -319,33 +342,33 @@ namespace TerrariaDedicatedServerGUI
 
             if (Int32.TryParse(this.tbPort.Text, out iBuffer))
             {
-                this.tmpSetConfig.Port = iBuffer;
+                this.tmpConfig.Port = iBuffer;
             }
         }
 
-        void tbBanlist_Validated(object sender, EventArgs e)
+        private void tbBanlist_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.BanList = this.tbBanlist.Text;
+            this.tmpConfig.BanList = this.tbBanlist.Text;
         }
 
-        void tbConfig_Validated(object sender, EventArgs e)
+        private void tbConfig_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.Config = this.tbConfig.Text;
+            this.tmpConfig.Config = this.tbConfig.Text;
         }
 
-        void tbAutoCreateName_Validated(object sender, EventArgs e)
+        private void tbAutoCreateName_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.AutoCreateName = this.tbAutoCreateName.Text;
+            this.tmpConfig.AutoCreateName = this.tbAutoCreateName.Text;
         }
 
-        void cbAutoCreate_Validated(object sender, EventArgs e)
+        private void cbAutoCreate_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.AutoCreateValue = this.cbAutoCreate.SelectedIndex;
+            this.tmpConfig.AutoCreateValue = this.cbAutoCreate.SelectedIndex;
         }
 
-        void chbAutoCreate_Validated(object sender, EventArgs e)
+        private void chbAutoCreate_Validated(object sender, EventArgs e)
         {
-            this.tmpSetConfig.AutoCreate = this.chbAutoCreate.Checked;
+            this.tmpConfig.AutoCreate = this.chbAutoCreate.Checked;
         }
 
         #endregion
@@ -355,13 +378,13 @@ namespace TerrariaDedicatedServerGUI
 
         private void tsmiStartServer_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(this.tmpSetConfig.ServerPath))
+            if (String.IsNullOrEmpty(this.tmpConfig.ServerPath))
             {
                 MessageBox.Show("Setup Server Path first!", "Server Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            if (String.IsNullOrEmpty(this.tmpSetConfig.WorldPath))
+            if (String.IsNullOrEmpty(this.tmpConfig.WorldPath))
             {
                 MessageBox.Show("Setup World Path first!", "World Path", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -385,11 +408,11 @@ namespace TerrariaDedicatedServerGUI
 
             if (!this.tmpController.Running)
             {
-                if (!File.Exists(this.tmpSetConfig.AppPath + "config.xml"))
+                if (!File.Exists(this.tmpConfig.AppPath + "config.xml"))
                 {
-                    this.tmpSetConfig.Error = false;
+                    this.tmpConfig.Error = false;
 
-                    if (this.tmpSetConfig.WriteConfig()) //if WriteConfig throw Error
+                    if (this.tmpConfig.WriteConfig()) //if WriteConfig throw Error
                     {
                         MessageBox.Show("an Error occured during Save Config", "Error Save Config", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
@@ -402,29 +425,31 @@ namespace TerrariaDedicatedServerGUI
                 this.lbController.Items.Add("");
                 this.lbController.SelectedIndex = this.lbController.Items.Count - 1;
 
-                this.tmpController.Arguments = "-config " + this.tmpSetConfig.ServerPath + "\\serverconfig.txt";
-                this.tmpController.Arguments = "-port " + this.tmpSetConfig.Port.ToString();
-                this.tmpController.Arguments = "-players " + this.tmpSetConfig.Players.ToString();
+                this.tmpController.Arguments = "-config " + this.tmpConfig.ServerPath + "\\serverconfig.txt";
+                this.tmpController.Arguments = "-port " + this.tmpConfig.Port.ToString();
+                this.tmpController.Arguments = "-players " + this.tmpConfig.Players.ToString();
                 this.tmpController.Arguments = "-motd \"" + this.tbMotd.Text + "\"";
 
-                if (this.tmpSetConfig.Password.Length >= 1)
+                if (this.tmpConfig.Password.Length >= 1)
                 {
-                    this.tmpController.Arguments = "-password " + this.tmpSetConfig.Password;
+                    this.tmpController.Arguments = "-password " + this.tmpConfig.Password;
                 }
 
-                this.tmpController.Arguments = "-banlist " + this.tmpSetConfig.ServerPath + "banlist.txt";
+                this.tmpController.Arguments = "-banlist " + this.tmpConfig.ServerPath + "banlist.txt";
 
-                if (this.tmpSetConfig.Secure)
+                if (this.tmpConfig.Secure)
                 {
                     this.tmpController.Arguments = "-secure";
                 }
 
-                if (this.tmpSetConfig.NoUPNP)
+                if (this.tmpConfig.NoUPNP)
                 {
                     this.tmpController.Arguments = "-noupnp";
                 }
 
-                this.tmpController.FileName = this.tmpSetConfig.ServerPath;
+                this.tmpController.Priority = this.tmpConfig.Priority;
+
+                this.tmpController.FileName = this.tmpConfig.ServerPath;
 
                 this.tmpController.DoJobAsync();
                 this.tbCommand.Select();
@@ -475,14 +500,13 @@ namespace TerrariaDedicatedServerGUI
 
         private void tbAdmin_TextChanged(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(this.tbAdmin.Text))
-            {
-                this.tmpController.Admin = this.tbAdmin.Text;
-            }
+            this.tmpConfig.AdminName = this.tbAdmin.Text;
+            this.tmpController.Admin = this.tbAdmin.Text;
         }
 
         private void chbAdmin_CheckedChanged(object sender, EventArgs e)
         {
+            this.tmpConfig.AllowAdmin = this.chbAdmin.Checked;
             this.tmpController.AllowAdmin = this.chbAdmin.Checked;
         }
 
@@ -493,7 +517,8 @@ namespace TerrariaDedicatedServerGUI
 
         private void chbUserTime_CheckedChanged(object sender, EventArgs e)
         {
-            this.tmpController.AllowUserTime = this.chbUserTime.Checked;
+            this.tmpConfig.AllowUserInteract = this.chbUserInteract.Checked;
+            this.tmpController.AllowUserTime = this.chbUserInteract.Checked;
         }
 
         #endregion
