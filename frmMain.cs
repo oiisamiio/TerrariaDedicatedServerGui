@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using Microsoft.Win32;
 using Local.Server;
 using Local.UIClass;
 using Local.WebClass;
@@ -141,17 +142,27 @@ namespace TerrariaDedicatedServerGUI
         {
             using (FolderBrowserDialog fbdServer = new FolderBrowserDialog())
             {
-                string sProgramX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                String sProgramX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                String sServerPath = String.Empty;
 
                 if (Directory.Exists(sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\"))
                 {
                     fbdServer.SelectedPath = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
                     fbdServer.Description = sProgramX86 + "\\Steam\\SteamApps\\common\\Terraria\\";
                 }
+                else
+                {
+                    sServerPath = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "SteamPath", "").ToString();
+                }
 
                 fbdServer.ShowDialog();
 
-                if (fbdServer.SelectedPath != null && !String.IsNullOrEmpty(fbdServer.SelectedPath) && File.Exists(fbdServer.SelectedPath + "\\TerrariaServer.exe"))
+                if (fbdServer.SelectedPath != null && !String.IsNullOrEmpty(fbdServer.SelectedPath))
+                {
+                    sServerPath = fbdServer.SelectedPath;
+                }
+
+                if (File.Exists(fbdServer.SelectedPath + "\\TerrariaServer.exe"))
                 {
                     this.tmpSetConfig.ServerPath = fbdServer.SelectedPath;
                     this.tbServerPath.Text = this.tmpSetConfig.ServerPath;
