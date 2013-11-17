@@ -10,6 +10,7 @@ Actual Features:
 (dirty! None Admin User could type Chat Message like: blah <adminname> server command)
 * Shows external Server IP
 * Count Player/show playing Players
+* Support TShock Server Mod
 
 Actual Restrictions: 
 * only English supported

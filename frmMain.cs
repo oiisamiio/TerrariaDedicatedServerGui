@@ -449,7 +449,8 @@ namespace TerrariaDedicatedServerGUI
 
                 this.tmpController.Priority = this.tmpConfig.Priority;
 
-                this.tmpController.FileName = this.tmpConfig.ServerPath;
+                this.tmpController.WorkingPath = this.tmpConfig.ServerPath;
+                this.tmpController.FileName = "\\TerrariaServer.exe";
 
                 this.tmpController.DoJobAsync();
                 this.tbCommand.Select();

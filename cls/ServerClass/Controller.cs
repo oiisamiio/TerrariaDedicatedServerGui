@@ -29,12 +29,13 @@ namespace Local.Server
         private Boolean bLockPlaying = false;
 
         private Boolean bAllowUserTime = false;
-        
+
         private Int64 iCount = 0;
 
         private Process pController;
         private Int32 iPriority = 1;
 
+        private String sWorkingPath = String.Empty;
         private String sFileName = String.Empty;
         private StringBuilder sbArguments = new StringBuilder();
 
@@ -52,9 +53,14 @@ namespace Local.Server
         #region Properties
         //Properties
 
+        public String WorkingPath
+        {//FileName
+            set { this.sWorkingPath = value; }
+        }
+
         public String FileName
         {//FileName
-            set { this.sFileName = value + "\\TerrariaServer.exe"; }
+            set { this.sFileName = this.sWorkingPath + value; }
         }
 
         public String Arguments
@@ -248,9 +254,10 @@ namespace Local.Server
                         ppcController = ProcessPriorityClass.Normal;
                         break;
                 }
-                
+
                 this.pController.StartInfo.FileName = this.sFileName;
                 this.pController.StartInfo.Arguments = this.sbArguments.ToString().Replace("\r", "").Replace("\n", " ");
+                this.pController.StartInfo.WorkingDirectory = this.sWorkingPath;
 
                 this.pController.OutputDataReceived += pController_OutputDataReceived;
                 this.pController.ErrorDataReceived += pController_ErrorDataReceived;
@@ -298,7 +305,7 @@ namespace Local.Server
                 this.sBufferOut = e.Data;
                 this.sBufferOutLower = e.Data.ToLower();
 
-                if (this.iCount <= 5 && !this.bLockVersion) //workarround get Terraria Server vx.x.x
+                if (this.iCount <= 30 && !this.bLockVersion) //workarround get Terraria Server vx.x.x
                 {
                     if (this.sBufferOutLower.Contains("terraria server v"))
                     {
@@ -335,37 +342,37 @@ namespace Local.Server
                 }
                 else
                 {
-                    if (this.bLockTime && this.sBufferOutLower.Contains("time") && !this.sBufferOut.Contains("<Server>"))
+                    if (this.bLockTime && this.sBufferOutLower.Contains("time") && !this.sBufferOut.Contains("Server"))
                     {//Server send back Chat Message: time (Step 2)
                         this.bLockTime = false;
                         this.pController.StandardInput.WriteLine("say Game " + this.sBufferOut + " - Server Time: " + DateTime.Now.ToShortTimeString());
                     }
 
-                    if (this.sBufferOutLower.Contains("> time") && !this.sBufferOut.Contains("<Server>"))
+                    if (this.sBufferOutLower.Contains("> time") && !this.sBufferOut.Contains("Server"))
                     {//User send Chat Message: time (Step 1)
                         this.bLockTime = true;
                         this.pController.StandardInput.WriteLine("time");
                     }
 
-                    if (this.bLockMotd && this.sBufferOutLower.Contains("motd") && !this.sBufferOut.Contains("<Server>"))
+                    if (this.bLockMotd && this.sBufferOutLower.Contains("motd") && !this.sBufferOut.Contains("Server"))
                     {//Server send back Chat Message: motd (Step 2)
                         this.bLockMotd = false;
                         this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
                     }
 
-                    if ((this.sBufferOutLower.Contains("> motd") || this.sBufferOutLower.Contains("help")) && !this.sBufferOut.Contains("<Server>"))
+                    if ((this.sBufferOutLower.Contains("> motd") || this.sBufferOutLower.Contains("help")) && !this.sBufferOut.Contains("Server") && !this.sBufferOutLower.Contains("type /"))
                     {//User send Chat Message: motd (Step 1)
                         this.bLockMotd = true;
                         this.pController.StandardInput.WriteLine("motd");
                     }
 
-                    if (this.bLockPlaying && this.sBufferOutLower.Contains("(") && this.sBufferOutLower.Contains(")") && !this.sBufferOut.Contains("<Server>"))
+                    if (this.bLockPlaying && this.sBufferOutLower.Contains("(") && this.sBufferOutLower.Contains(")") && !this.sBufferOut.Contains("Server"))
                     {//Server send back Chat Message: playing (Step 2)
                         this.bLockPlaying = false;
                         this.pController.StandardInput.WriteLine("say " + this.sBufferOut);
                     }
 
-                    if (this.sBufferOutLower.Contains("> playing") && !this.sBufferOut.Contains("<Server>"))
+                    if (this.sBufferOutLower.Contains("> playing") && !this.sBufferOut.Contains("Server"))
                     {//User send Chat Message: playing (Step 1)
                         this.bLockPlaying = true;
                         this.pController.StandardInput.WriteLine("playing");
