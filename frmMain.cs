@@ -82,6 +82,8 @@ namespace TerrariaDedicatedServerGUI
             this.tmpController.ProgressChanged += new Controller.EventHandler(tmpController_ProgressChanged);
             this.tmpController.Completed += new Controller.EventHandler(tmpController_Completed);
 
+            this.tmpController.Init();
+
             this.tmpGetIpAdress.Completed += new GetIpAdress.EventHandler(tmpGetIpAdress_Completed);
 
             this.tmpGetIpAdress.Init();

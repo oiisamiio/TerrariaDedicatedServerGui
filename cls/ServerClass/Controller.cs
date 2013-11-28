@@ -30,6 +30,10 @@ namespace Local.Server
 
         private Boolean bAllowUserTime = false;
 
+        private Byte iForceTime = 0;
+
+        private System.Timers.Timer tForceTime = new System.Timers.Timer(); //Night 9m Realtime = 9h Gametime / Day 15m Realtime = 15 Gametime
+
         private Int64 iCount = 0;
 
         private Process pController;
@@ -186,7 +190,10 @@ namespace Local.Server
 
         public void Init()
         {
-
+            this.tForceTime.Interval = 4 * 60 * 1000;
+            this.tForceTime.AutoReset = true;
+            this.tForceTime.Enabled = true;
+            this.tForceTime.Elapsed += new System.Timers.ElapsedEventHandler(tForceTime_Elapsed);
         }
 
         #endregion
@@ -383,21 +390,68 @@ namespace Local.Server
                         if (this.sBufferOutLower.Contains("> dawn"))
                         {
                             this.pController.StandardInput.WriteLine("dawn");
+                            this.pController.StandardInput.WriteLine("say time set to dawn");
                         }
 
                         if (this.sBufferOutLower.Contains("> noon"))
                         {
                             this.pController.StandardInput.WriteLine("noon");
+                            this.pController.StandardInput.WriteLine("say time set to noon");
                         }
 
                         if (this.sBufferOutLower.Contains("> dusk"))
                         {
                             this.pController.StandardInput.WriteLine("dusk");
+                            this.pController.StandardInput.WriteLine("say time set to dusk");
                         }
 
                         if (this.sBufferOutLower.Contains("> midnight"))
                         {
                             this.pController.StandardInput.WriteLine("midnight");
+                            this.pController.StandardInput.WriteLine("say time set to midnight");
+                        }
+
+                        if (this.sBufferOutLower.Contains("> forcedawn"))
+                        {
+                            this.pController.StandardInput.WriteLine("dawn");
+                            this.iForceTime = 1;
+                            this.tForceTime.Interval = 7 * 60 * 1000;
+                            this.tForceTime.Start();
+                            this.pController.StandardInput.WriteLine("say time forced to dawn (use resetforce for reset)");
+                        }
+
+                        if (this.sBufferOutLower.Contains("> forcenoon"))
+                        {
+                            this.pController.StandardInput.WriteLine("noon");
+                            this.iForceTime = 2;
+                            this.tForceTime.Interval = 7 * 60 * 1000;
+                            this.tForceTime.Start();
+                            this.pController.StandardInput.WriteLine("say time forced to noon (use resetforce for reset)");
+                        }
+
+                        if (this.sBufferOutLower.Contains("> forcedusk"))
+                        {
+                            this.pController.StandardInput.WriteLine("dusk");
+                            this.iForceTime = 3;
+                            this.tForceTime.Interval = 4 * 60 * 1000;
+                            this.tForceTime.Start();
+                            this.pController.StandardInput.WriteLine("say time forced to dusk (use resetforce for reset)");
+                        }
+
+                        if (this.sBufferOutLower.Contains("> forcemidnight"))
+                        {
+                            this.pController.StandardInput.WriteLine("midnight");
+                            this.iForceTime = 4;
+                            this.tForceTime.Interval = 4 * 60 * 1000;
+                            this.tForceTime.Start();
+                            this.pController.StandardInput.WriteLine("say time forced to midnight (use resetforce for reset)");
+                        }
+
+                        if (this.sBufferOutLower.Contains("> resetforce"))
+                        {
+                            this.iForceTime = 0;
+                            this.tForceTime.Stop();
+                            this.pController.StandardInput.WriteLine("say time force reseted");
                         }
                     }
                 }
@@ -416,6 +470,37 @@ namespace Local.Server
             this.sbArguments.Clear();
             this.iPlayer = 0;
             this.bRunning = false;
+        }
+
+        #endregion
+
+        #region Timer Elapsed
+        //Timer Elapsed
+
+        private void tForceTime_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            switch (this.iForceTime)
+            {
+                case 1:
+                    this.pController.StandardInput.WriteLine("dawn");
+                    this.pController.StandardInput.WriteLine("say time forced to dawn (use resetforce for reset)");
+                    break;
+                case 2:
+                    this.pController.StandardInput.WriteLine("noon");
+                    this.pController.StandardInput.WriteLine("say time forced to noon (use resetforce for reset)");
+                    break;
+                case 3:
+                    this.pController.StandardInput.WriteLine("dusk");
+                    this.pController.StandardInput.WriteLine("say time forced to dusk (use resetforce for reset)");
+                    break;
+                case 4:
+                    this.pController.StandardInput.WriteLine("midnight");
+                    this.pController.StandardInput.WriteLine("say time forced to midnight (use resetforce for reset)");
+                    break;
+                default:
+                    this.tForceTime.Stop();
+                    break;
+            }
         }
 
         #endregion

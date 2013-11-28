@@ -748,16 +748,17 @@
             // lblExampleAdmin
             // 
             this.lblExampleAdmin.AutoSize = true;
-            this.lblExampleAdmin.Location = new System.Drawing.Point(251, 452);
+            this.lblExampleAdmin.Location = new System.Drawing.Point(136, 452);
             this.lblExampleAdmin.Name = "lblExampleAdmin";
-            this.lblExampleAdmin.Size = new System.Drawing.Size(177, 26);
+            this.lblExampleAdmin.Size = new System.Drawing.Size(306, 26);
             this.lblExampleAdmin.TabIndex = 13;
-            this.lblExampleAdmin.Text = "Example: /noon as Admin command\r\n                 noon as non Admin";
+            this.lblExampleAdmin.Text = "Example: /noon as Admin command or type noon as non Admin\r\n                 type " +
+    "forcemidnight to force midnight";
             // 
             // chbUserInteract
             // 
             this.chbUserInteract.AutoSize = true;
-            this.chbUserInteract.Location = new System.Drawing.Point(254, 373);
+            this.chbUserInteract.Location = new System.Drawing.Point(139, 373);
             this.chbUserInteract.Margin = new System.Windows.Forms.Padding(2);
             this.chbUserInteract.Name = "chbUserInteract";
             this.chbUserInteract.Size = new System.Drawing.Size(134, 17);
@@ -778,16 +779,16 @@
             // 
             // tbAdmin
             // 
-            this.tbAdmin.Location = new System.Drawing.Point(254, 429);
+            this.tbAdmin.Location = new System.Drawing.Point(139, 429);
             this.tbAdmin.Name = "tbAdmin";
-            this.tbAdmin.Size = new System.Drawing.Size(160, 20);
+            this.tbAdmin.Size = new System.Drawing.Size(174, 20);
             this.tbAdmin.TabIndex = 10;
             this.tbAdmin.TextChanged += new System.EventHandler(this.tbAdmin_TextChanged);
             // 
             // chbAdmin
             // 
             this.chbAdmin.AutoSize = true;
-            this.chbAdmin.Location = new System.Drawing.Point(254, 394);
+            this.chbAdmin.Location = new System.Drawing.Point(139, 394);
             this.chbAdmin.Margin = new System.Windows.Forms.Padding(2);
             this.chbAdmin.Name = "chbAdmin";
             this.chbAdmin.Size = new System.Drawing.Size(163, 30);
@@ -828,9 +829,9 @@
             // 
             // tbCommandChat
             // 
-            this.tbCommandChat.Location = new System.Drawing.Point(448, 434);
+            this.tbCommandChat.Location = new System.Drawing.Point(522, 434);
             this.tbCommandChat.Name = "tbCommandChat";
-            this.tbCommandChat.Size = new System.Drawing.Size(188, 20);
+            this.tbCommandChat.Size = new System.Drawing.Size(114, 20);
             this.tbCommandChat.TabIndex = 5;
             this.tbCommandChat.Text = "Hello World!";
             // 
