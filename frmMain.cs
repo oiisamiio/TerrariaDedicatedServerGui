@@ -166,10 +166,15 @@ namespace TerrariaDedicatedServerGUI
                 }
                 else
                 {
-                    sServerPath = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "SteamPath", "").ToString();
-                    if (!String.IsNullOrEmpty(sServerPath))
+                    var KeyExists = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+
+                    if (KeyExists != null)
                     {
-                        sServerPath = sServerPath.Replace("/", "\\") + "\\SteamApps\\common\\Terraria\\";
+                        sServerPath = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Valve\Steam", "SteamPath", "").ToString();
+                        if (!String.IsNullOrEmpty(sServerPath))
+                        {
+                            sServerPath = sServerPath.Replace("/", "\\") + "\\SteamApps\\common\\Terraria\\";
+                        }
                     }
                 }
 
