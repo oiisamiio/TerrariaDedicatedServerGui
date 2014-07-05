@@ -496,7 +496,7 @@
             this.tbPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPassword.Location = new System.Drawing.Point(3, 422);
             this.tbPassword.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.tbPassword.MaxLength = 6;
+            this.tbPassword.MaxLength = 20;
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(300, 22);
             this.tbPassword.TabIndex = 8;
