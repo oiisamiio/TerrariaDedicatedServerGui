@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
+using System.IO;
 
 namespace Local.Server
 {
@@ -52,6 +53,8 @@ namespace Local.Server
 
         private BackgroundWorker bwHelper = new BackgroundWorker();
 
+        StreamWriter InputStream = null;
+
         #endregion
 
         #region Properties
@@ -78,7 +81,8 @@ namespace Local.Server
             {
                 if (this.pController != null && this.bRunning)
                 {
-                    this.pController.StandardInput.WriteLine(value);
+                    InputStream.WriteLine(value);
+                    InputStream.Flush();
                 }
             }
         }
@@ -279,6 +283,8 @@ namespace Local.Server
 
                 this.pController.BeginErrorReadLine();
                 this.pController.BeginOutputReadLine();
+
+                this.InputStream = new StreamWriter(this.pController.StandardInput.BaseStream, Encoding.Unicode);
 
                 this.pController.WaitForExit();
             }
@@ -554,6 +560,7 @@ namespace Local.Server
                 // Call Dispose on your base class.
 
                 this.pController.Dispose();
+                this.InputStream.Dispose();
 
                 disposed = true;
             }
